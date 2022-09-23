@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "CfnisH0Czbaayf3CdIGoqh3piWKbwO09w1ifNVeAjZmey2spE08b8SCHP893Pt8QdJ8uWBPhQN2HR7NjQQ9g2w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\HENRIQUE\\workspace\\Restaurant\\src\\Restaurante.Core\\Restaurant.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HENRIQUE\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+  ],
+  "logs": []
+}
