@@ -14,10 +14,12 @@ namespace Restaurant.Infra.Repositories
         {
         }
 
-        public async Task<IReadOnlyList<Product>> GetAllAsync(int pageSize, int pageNumber)
+        public async Task<IReadOnlyList<Product>> GetAllAsync(int pageSize, int pageNumber, string productName)
         {
             return await _context.Set<Product>()
                 .AsNoTracking()
+                    .Include(p => p.Category)
+                        .Where(p => p.Name.Contains(productName) || productName == null)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();

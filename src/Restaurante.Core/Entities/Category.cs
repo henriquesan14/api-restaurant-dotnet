@@ -1,6 +1,7 @@
 ﻿using Restaurant.Core.Entities.Base;
 using Restaurant.Core.Enums;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
@@ -20,6 +21,8 @@ namespace Restaurant.Core.Entities
         public string Name { get; set; }
 
         public CategoryType CategoryType { get; set; }
+
+        [JsonIgnore]
         public IEnumerable<Product> Products { get; set; }
     }
 }
