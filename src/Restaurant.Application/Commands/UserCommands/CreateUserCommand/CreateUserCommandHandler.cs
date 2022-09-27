@@ -3,8 +3,6 @@ using MediatR;
 using Restaurant.Application.ViewModels;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
