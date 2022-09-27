@@ -5,7 +5,7 @@ using Restaurant.Core.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Restaurant.Application.Commands.CreateProduct
+namespace Restaurant.Application.Commands.ProductCommands.CreateProduct
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
     {
@@ -21,9 +21,9 @@ namespace Restaurant.Application.Commands.CreateProduct
 
         public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var user = _mapper.Map<Product>(request);
-            await _repository.AddAsync(user);
-            return user.Id;
+            var product = _mapper.Map<Product>(request);
+            await _repository.AddAsync(product);
+            return product.Id;
         }
     }
 }

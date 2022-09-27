@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Restaurant.Application.Queries.GetAllProducts
+namespace Restaurant.Application.Queries.ProductQueries.GetAllProducts
 {
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, PagedListViewModel<ProductViewModel>>
     {

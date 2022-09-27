@@ -3,24 +3,16 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using Restaurant.API.Extensions;
 using Restaurant.API.Filters;
-using Restaurant.Application.Mappers;
-using Restaurant.Application.Queries.GetAllProducts;
+using Restaurant.Application.Queries.ProductQueries.GetAllProducts;
 using Restaurant.Application.Validators;
 using Restaurant.Infra;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace Restaurant.API
 {
@@ -39,19 +31,14 @@ namespace Restaurant.API
             var connectionString = Configuration.GetConnectionString("DbConnection");
             services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(connectionString));
 
-            var config = new AutoMapper.MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<ProductMapper>();
-            });
-            IMapper mapper = config.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AutoMapperConfig();
 
             services.AddInfrastructure();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Restaurant API", Version = "v1" });
-            });
+            services.SwaggerConfig();
+
+            var key = Encoding.ASCII.GetBytes(Configuration["TokenSettings:Secret"]);
+            services.AuthConfig(key);
 
             services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)))
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateProductCommandValidator>());
@@ -69,6 +56,9 @@ namespace Restaurant.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseHttpsRedirection();
 

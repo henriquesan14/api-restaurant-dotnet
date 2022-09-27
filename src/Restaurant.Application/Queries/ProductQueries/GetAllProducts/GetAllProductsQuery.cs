@@ -2,7 +2,7 @@
 using Restaurant.Application.ViewModels;
 using Restaurant.Application.ViewModels.Page;
 
-namespace Restaurant.Application.Queries.GetAllProducts
+namespace Restaurant.Application.Queries.ProductQueries.GetAllProducts
 {
     public  class GetAllProductsQuery : IRequest<PagedListViewModel<ProductViewModel>>
     {

@@ -14,6 +14,7 @@ namespace Restaurant.API.Extensions
             //Repositories
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
             return services;
         }
