@@ -1,28 +1,25 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
+using Restaurant.Application.Commands.UserCommands.CreateUserCommand;
 using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class CategoryController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-
-        public CategoryController(IMediator mediator)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
             var id = await _mediator.Send(command);
-
             return Ok(id);
         }
     }

@@ -1,6 +1,8 @@
-﻿using Restaurant.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
 using Restaurant.Infra.Repositories.Base;
+using System.Threading.Tasks;
 
 namespace Restaurant.Infra.Repositories
 {
@@ -8,6 +10,13 @@ namespace Restaurant.Infra.Repositories
     {
         public UserRepository(RestaurantContext context) : base(context)
         {
+        }
+
+        public async Task<User> GetByEmail(string email)
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }

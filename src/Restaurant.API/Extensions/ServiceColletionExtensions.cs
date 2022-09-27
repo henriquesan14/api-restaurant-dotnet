@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Application.Services;
 using Restaurant.Core.Repositories;
 using Restaurant.Core.Repositories.Base;
+using Restaurant.Core.Services;
 using Restaurant.Infra.Repositories;
 using Restaurant.Infra.Repositories.Base;
 
@@ -15,6 +17,10 @@ namespace Restaurant.API.Extensions
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
+            //Services
+            services.AddTransient<ITokenService, TokenService>();
 
             return services;
         }
