@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
+using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
+using Restaurant.Application.Queries.ProductQueries.GetAllProducts;
+using Restaurant.Application.ViewModels.Page;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -30,6 +33,14 @@ namespace Restaurant.API.Controllers
             command.EmployeeId = int.Parse(userId);
             var id = await _mediator.Send(command);
             return Ok(id);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter)
+        {
+            var query = new GetAllOrdersQuery(pageFilter);
+            var order = await _mediator.Send(query);
+            return Ok(order);
         }
     }
 }

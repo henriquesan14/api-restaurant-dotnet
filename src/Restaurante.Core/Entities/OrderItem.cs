@@ -1,5 +1,6 @@
 ﻿using Restaurant.Core.Entities.Base;
 using Restaurant.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
@@ -22,9 +23,12 @@ namespace Restaurant.Core.Entities
         public ItemOrderStatus Status{ get; set; }
 
         public Product Product { get; set; }
+        [JsonIgnore]
         public int ProductId { get; set; }
 
+        [JsonIgnore]
         public Order Order { get; set; }
+        [JsonIgnore]
         public int OrderId { get; set; }
 
         public decimal SubTotal

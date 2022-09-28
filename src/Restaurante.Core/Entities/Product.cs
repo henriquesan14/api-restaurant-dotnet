@@ -1,4 +1,5 @@
 ﻿using Restaurant.Core.Entities.Base;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
@@ -23,7 +24,7 @@ namespace Restaurant.Core.Entities
         public string ImageUrl { get; set; }
 
         public virtual Category Category { get; set; }
-
+        [JsonIgnore]
         public int CategoryId { get; set; }
 
     }
