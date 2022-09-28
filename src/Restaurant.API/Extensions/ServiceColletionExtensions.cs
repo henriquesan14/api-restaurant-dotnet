@@ -18,6 +18,8 @@ namespace Restaurant.API.Extensions
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<ITableRepository, TableRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();

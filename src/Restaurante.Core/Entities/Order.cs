@@ -22,15 +22,16 @@ namespace Restaurant.Core.Entities
         public string Type { get; set; }
         public OrderStatus Status { get; set; }
         public User Client { get; set; }
+        public int ClientId { get; set; }
         public IEnumerable<OrderItem> Items { get; set; }
 
         public IEnumerable<Payment> Payments { get; set; }
         public decimal Total {
-            get { return Items.Sum(i => i.SubTotal); }
+            get { return Items != null ? Items.Sum(i => i.SubTotal) : 0; }
         }
 
         public bool IsPaid {
-            get { return Payments.Sum(p => p.AmountReceived) >= Total; }
+            get { return Payments != null ? Payments.Sum(p => p.AmountReceived) >= Total : false; }
         }
     }
 }

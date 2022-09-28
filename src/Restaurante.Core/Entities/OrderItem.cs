@@ -22,12 +22,14 @@ namespace Restaurant.Core.Entities
         public ItemOrderStatus Status{ get; set; }
 
         public Product Product { get; set; }
+        public int ProductId { get; set; }
 
         public Order Order { get; set; }
+        public int OrderId { get; set; }
 
         public decimal SubTotal
         {
-            get { return Product.Price * Quantity; }
+            get { return Product != null ? Product.Price * Quantity : 0; }
         }
     }
 }
