@@ -85,7 +85,7 @@ namespace Restaurant.Infra.Migrations
                     Name = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,7 +95,7 @@ namespace Restaurant.Infra.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,7 +161,7 @@ namespace Restaurant.Infra.Migrations
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Type = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false),
-                    ClientId = table.Column<int>(nullable: true),
+                    ClientId = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     TableId1 = table.Column<int>(nullable: true),
                     TableId = table.Column<int>(nullable: true),
@@ -176,25 +176,25 @@ namespace Restaurant.Infra.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Tables_TableId",
                         column: x => x.TableId,
                         principalTable: "Tables",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Users_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Tables_TableId1",
                         column: x => x.TableId1,
@@ -213,8 +213,8 @@ namespace Restaurant.Infra.Migrations
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Quantity = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: true),
-                    OrderId = table.Column<int>(nullable: true)
+                    ProductId = table.Column<int>(nullable: false),
+                    OrderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -224,13 +224,13 @@ namespace Restaurant.Infra.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

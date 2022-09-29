@@ -14,11 +14,27 @@ namespace Restaurant.Infra.Repositories
         {
             
         }
-        public async Task<IReadOnlyList<Order>> GetAllAsync(int pageSize, int pageNumber)
+        public async Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber)
         {
-            return await _context.Set<Order>()
+            return await _context.Set<CommonOrder>()
                 .AsNoTracking()
                 .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                .Include(o => o.Table)
+                .Include(o => o.Employee)
+                .Include(o => o.Client)
+                .Include(o => o.Payments)
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                    .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber)
+        {
+            return await _context.Set<DeliveryOrder>()
+                .AsNoTracking()
+                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                .Include(o => o.Address)
+                .Include(o => o.Client)
                 .Include(o => o.Payments)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)

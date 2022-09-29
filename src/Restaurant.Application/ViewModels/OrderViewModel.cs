@@ -11,6 +11,10 @@ namespace Restaurant.Application.ViewModels
         public string Type { get; set; }
         public OrderStatus Status { get; set; }
         public User Client { get; set; }
+        public Table Table { get; set; }
+        public User Employee { get; set; }
+
+        public Address Address { get; set; }
         public IEnumerable<OrderItem> Items { get; set; }
 
         public IEnumerable<Payment> Payments { get; set; }

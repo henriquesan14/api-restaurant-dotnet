@@ -85,7 +85,7 @@ namespace Restaurant.Infra.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ClientId")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -128,10 +128,10 @@ namespace Restaurant.Infra.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -188,7 +188,7 @@ namespace Restaurant.Infra.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -326,10 +326,10 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasBaseType("Restaurant.Core.Entities.Order");
 
-                    b.Property<int?>("EmployeeId")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TableId")
+                    b.Property<int>("TableId")
                         .HasColumnType("int");
 
                     b.HasIndex("EmployeeId");
@@ -343,7 +343,7 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasBaseType("Restaurant.Core.Entities.Order");
 
-                    b.Property<int?>("AddressId")
+                    b.Property<int>("AddressId")
                         .HasColumnType("int");
 
                     b.HasIndex("AddressId");
@@ -362,7 +362,9 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasOne("Restaurant.Core.Entities.User", "Client")
                         .WithMany("Orders")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Restaurant.Core.Entities.Table", null)
                         .WithMany("Orders")
@@ -373,11 +375,15 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasOne("Restaurant.Core.Entities.Order", "Order")
                         .WithMany("Items")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Restaurant.Core.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Restaurant.Core.Entities.Payment", b =>
@@ -391,7 +397,9 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasOne("Restaurant.Core.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Restaurant.Core.Entities.UserRole", b =>
@@ -409,18 +417,24 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasOne("Restaurant.Core.Entities.User", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Restaurant.Core.Entities.Table", "Table")
                         .WithMany()
-                        .HasForeignKey("TableId");
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Restaurant.Core.Entities.DeliveryOrder", b =>
                 {
                     b.HasOne("Restaurant.Core.Entities.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

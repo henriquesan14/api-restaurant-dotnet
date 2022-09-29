@@ -1,5 +1,6 @@
 ﻿using Restaurant.Core.Entities.Base;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
@@ -30,10 +31,11 @@ namespace Restaurant.Core.Entities
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
+        [JsonIgnore]
         public string Password { get; set; }
         public IEnumerable<UserRole> Roles { get; set; }
-
         public IEnumerable<Address> Addresses { get; set; }
+        [JsonIgnore]
         public IEnumerable<Order> Orders { get; set; }
     }
 }

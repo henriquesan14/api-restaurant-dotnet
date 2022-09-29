@@ -7,6 +7,7 @@ namespace Restaurant.Core.Repositories
 {
     public  interface IOrderRepository : IBaseRepository<Order>
     {
-        Task<IReadOnlyList<Order>> GetAllAsync(int pageSize, int pageNumber);
+        Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber);
+        Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber);
     }
 }
