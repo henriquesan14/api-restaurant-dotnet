@@ -11,6 +11,7 @@ namespace Restaurant.Application.Mappers
     {
         public OrderMapper()
         {
+            CreateMap<Order, OrderViewModel>().ReverseMap();
             CreateMap<CommonOrder, OrderViewModel>().ReverseMap();
             CreateMap<DeliveryOrder, OrderViewModel>().ReverseMap();
             CreateMap<CreateCommonOrderCommand, CommonOrder>().ReverseMap();

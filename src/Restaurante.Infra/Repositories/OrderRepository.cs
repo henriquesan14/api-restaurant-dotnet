@@ -18,11 +18,9 @@ namespace Restaurant.Infra.Repositories
         {
             return await _context.Set<CommonOrder>()
                 .AsNoTracking()
-                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
                 .Include(o => o.Table)
                 .Include(o => o.Employee)
                 .Include(o => o.Client)
-                .Include(o => o.Payments)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();
@@ -32,13 +30,32 @@ namespace Restaurant.Infra.Repositories
         {
             return await _context.Set<DeliveryOrder>()
                 .AsNoTracking()
-                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
-                .Include(o => o.Address)
                 .Include(o => o.Client)
-                .Include(o => o.Payments)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();
+        }
+
+        public async Task<CommonOrder> GetCommonOrderByIdAsync(int id)
+        {
+            return await _context.Set<CommonOrder>()
+                .AsNoTracking()
+                .Include(o => o.Table)
+                .Include(o => o.Employee)
+                .Include(o => o.Client)
+                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                                    .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id)
+        {
+            return await _context.Set<DeliveryOrder>()
+                .AsNoTracking()
+                .Include(o => o.Address)
+                .Include(o => o.Client)
+                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                                    .FirstOrDefaultAsync(o => o.Id == id);
+
         }
     }
 }

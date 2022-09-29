@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
 using Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
+using Restaurant.Application.Queries.OrderQueries.GetOrder;
 using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Restaurant.API.Controllers
             var userId = claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             command.EmployeeId = int.Parse(userId);
             var id = await _mediator.Send(command);
-            return Ok(id);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpPost("delivery")]
@@ -43,13 +44,21 @@ namespace Restaurant.API.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var userId = claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var id = await _mediator.Send(command);
-            return Ok(id);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] OrderType orderType = OrderType.COMMON)
         {
             var query = new GetAllOrdersQuery(pageFilter, orderType);
+            var order = await _mediator.Send(query);
+            return Ok(order);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id, [FromQuery] OrderType orderType = OrderType.COMMON)
+        {
+            var query = new GetOrderQuery(id, orderType);
             var order = await _mediator.Send(query);
             return Ok(order);
         }

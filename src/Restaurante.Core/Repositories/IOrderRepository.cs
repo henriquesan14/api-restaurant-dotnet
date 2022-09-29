@@ -9,5 +9,7 @@ namespace Restaurant.Core.Repositories
     {
         Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber);
         Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber);
+        Task<CommonOrder> GetCommonOrderByIdAsync(int id);
+        Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id);
     }
 }
