@@ -28,11 +28,11 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
             IReadOnlyCollection<Order> orders = null;
             if (request.OrderType == OrderType.COMMON)
             {
-                orders = await _orderRepository.GetAllCommonOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber);
+                orders = await _orderRepository.GetAllCommonOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status);
             }
             else
             {
-                orders = await _orderRepository.GetAllDeliveryOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber);
+                orders = await _orderRepository.GetAllDeliveryOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status);
             }
 
             var ordersViewModel = _mapper.Map<List<OrderViewModel>>(orders);

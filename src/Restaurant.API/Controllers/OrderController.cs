@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
 using Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder;
+using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
+using Restaurant.Application.Queries.OrderQueries.GetCountOrderToday;
 using Restaurant.Application.Queries.OrderQueries.GetOrder;
 using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
@@ -48,9 +50,9 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] OrderType orderType = OrderType.COMMON)
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] int? status, [FromQuery] OrderType orderType = OrderType.COMMON)
         {
-            var query = new GetAllOrdersQuery(pageFilter, orderType);
+            var query = new GetAllOrdersQuery(pageFilter, orderType, status);
             var order = await _mediator.Send(query);
             return Ok(order);
         }
@@ -61,6 +63,25 @@ namespace Restaurant.API.Controllers
             var query = new GetOrderQuery(id, orderType);
             var order = await _mediator.Send(query);
             return Ok(order);
+        }
+
+        [HttpPut("itens")]
+        public async Task<IActionResult> UpdateStatusItem([FromBody] UpdateOrderItemCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if(result == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+
+        [HttpGet("countToday")]
+        public async Task<IActionResult> GetCountOrderToday()
+        {
+            var result = await _mediator.Send(new GetCountOrderTodayQuery());
+            return Ok(result);
         }
     }
 }

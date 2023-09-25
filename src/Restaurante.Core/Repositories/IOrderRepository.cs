@@ -1,5 +1,7 @@
 ﻿using Restaurant.Core.Entities;
+using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories.Base;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,9 +9,10 @@ namespace Restaurant.Core.Repositories
 {
     public  interface IOrderRepository : IBaseRepository<Order>
     {
-        Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber);
-        Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber);
+        Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status);
+        Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status);
         Task<CommonOrder> GetCommonOrderByIdAsync(int id);
         Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id);
+        Task<int> GetCountOrderToday(DateTime today);
     }
 }
