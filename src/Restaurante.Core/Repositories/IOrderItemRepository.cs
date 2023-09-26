@@ -10,5 +10,6 @@ namespace Restaurant.Core.Repositories
 
         Task<IReadOnlyList<OrderItem>> GetAllOrderItems(int pageSize, int pageNumber, int? status, DateTime? date);
         Task<int> GetCountOrderItemsToday(DateTime today);
+        Task<int> GetCountOrderItemsByStatus(int? status);
     }
 }

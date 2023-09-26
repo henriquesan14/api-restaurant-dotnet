@@ -33,5 +33,11 @@ namespace Restaurant.Infra.Repositories
             var result = await _context.Database.GetDbConnection().QueryAsync("SELECT * FROM OrderItems o WHERE CONVERT(DATE, o.CreatedAt , 120) = CONVERT(DATE, @Date, 120);", new { Date = today.Date });
             return result.Count();
         }
+
+        public async Task<int> GetCountOrderItemsByStatus(int? status)
+        {
+            var result = await _context.Database.GetDbConnection().QueryAsync("SELECT * FROM OrderItems o WHERE o.Status = @Status", new { Status = status });
+            return result.Count();
+        }
     }
 }
