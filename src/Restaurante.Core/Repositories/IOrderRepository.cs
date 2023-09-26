@@ -14,5 +14,6 @@ namespace Restaurant.Core.Repositories
         Task<CommonOrder> GetCommonOrderByIdAsync(int id);
         Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id);
         Task<int> GetCountOrderToday(DateTime today);
+        Task<decimal> GetTotalOrders(DateTime startDate, DateTime endDate);
     }
 }

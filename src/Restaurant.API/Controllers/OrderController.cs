@@ -7,6 +7,7 @@ using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
 using Restaurant.Application.Queries.OrderQueries.GetCountOrderToday;
 using Restaurant.Application.Queries.OrderQueries.GetOrder;
+using Restaurant.Application.Queries.OrderQueries.GetTotalOrders;
 using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
 using System;
@@ -82,6 +83,13 @@ namespace Restaurant.API.Controllers
         public async Task<IActionResult> GetCountOrderToday()
         {
             var result = await _mediator.Send(new GetCountOrderTodayQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("totalOrders")]
+        public async Task<IActionResult> GetTotalOrders([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            var result = await _mediator.Send(new GetTotalOrdersQuery(startDate, endDate));
             return Ok(result);
         }
     }

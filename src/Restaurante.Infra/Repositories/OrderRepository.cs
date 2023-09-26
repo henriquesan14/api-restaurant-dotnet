@@ -69,5 +69,18 @@ namespace Restaurant.Infra.Repositories
             var result = await _context.Database.GetDbConnection().QueryAsync("SELECT * FROM Orders o WHERE CONVERT(DATE, o.CreatedAt , 120) = CONVERT(DATE, @Date, 120);", new {Date = today.Date});
             return result.Count();
         }
+
+        public async Task<decimal> GetTotalOrders(DateTime startDate, DateTime endDate)
+        {
+            var query = @"SELECT SUM(oi.Quantity * p.Price)
+                        FROM RestaurantDb.dbo.OrderItems oi
+                        INNER JOIN Products p
+                        ON oi.ProductId = p.Id
+                        INNER JOIN Orders o
+                        ON o.Id = oi.OrderId
+                        WHERE CONVERT(date, oi.CreatedAt )  >= @StartDate AND CONVERT(date, oi.CreatedAt ) <= @EndDate";
+            var result = await _context.Database.GetDbConnection().QueryAsync<decimal>(query, new { StartDate = startDate, EndDate = endDate });
+            return result.FirstOrDefault();
+        }
     }
 }
