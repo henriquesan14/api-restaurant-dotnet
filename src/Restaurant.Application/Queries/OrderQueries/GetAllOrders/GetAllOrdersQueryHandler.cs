@@ -25,14 +25,14 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
 
         public async Task<PagedListViewModel<OrderViewModel>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
-            IReadOnlyCollection<Order> orders = null;
+            IReadOnlyCollection<Order> orders;
             if (request.OrderType == OrderType.COMMON)
             {
-                orders = await _orderRepository.GetAllCommonOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status);
+                orders = await _orderRepository.GetAllCommonOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status, request.Date);
             }
             else
             {
-                orders = await _orderRepository.GetAllDeliveryOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status);
+                orders = await _orderRepository.GetAllDeliveryOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status, request.Date);
             }
 
             var ordersViewModel = _mapper.Map<List<OrderViewModel>>(orders);

@@ -1,6 +1,12 @@
-﻿using Restaurant.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
 using Restaurant.Infra.Repositories.Base;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
+using System.Linq;
+using Dapper;
 
 namespace Restaurant.Infra.Repositories
 {
@@ -8,6 +14,24 @@ namespace Restaurant.Infra.Repositories
     {
         public OrderItemRepository(RestaurantContext context) : base(context)
         {
+        }
+
+        public async Task<IReadOnlyList<OrderItem>> GetAllOrderItems(int pageSize, int pageNumber, int? status, DateTime? date)
+        {
+            return await _context.Set<OrderItem>()
+                .AsNoTracking()
+                .Where(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
+                .Include(o => o.Order)
+                .Include(o => o.Product)
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                    .ToListAsync();
+        }
+
+        public async Task<int> GetCountOrderItemsToday(DateTime today)
+        {
+            var result = await _context.Database.GetDbConnection().QueryAsync("SELECT * FROM OrderItems o WHERE CONVERT(DATE, o.CreatedAt , 120) = CONVERT(DATE, @Date, 120);", new { Date = today.Date });
+            return result.Count();
         }
     }
 }

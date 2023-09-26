@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Core.Enums
 {
-    public enum ItemOrderStatus
+    public enum OrderItemStatus
     {
 
         PENDING,

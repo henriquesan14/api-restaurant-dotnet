@@ -1,14 +1,11 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Restaurant.Core.Entities;
-using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories;
 using Restaurant.Infra.Repositories.Base;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,11 +18,11 @@ namespace Restaurant.Infra.Repositories
         {
             _configuration = configuration;
         }
-        public async Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status)
+        public async Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date)
         {
             return await _context.Set<CommonOrder>()
                 .AsNoTracking()
-                .Where(o => (int) o.Status == status || !status.HasValue)
+                .Where(o => ((int) o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
                 .Include(o => o.Table)
                 .Include(o => o.Employee)
                 .Include(o => o.Client)
@@ -34,11 +31,11 @@ namespace Restaurant.Infra.Repositories
                                     .ToListAsync();
         }
 
-        public async Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status)
+        public async Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date)
         {
             return await _context.Set<DeliveryOrder>()
                 .AsNoTracking()
-                .Where(o => (int)o.Status == status || !status.HasValue)
+                .Where(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
                 .Include(o => o.Client)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)

@@ -9,6 +9,7 @@ using Restaurant.Application.Queries.OrderQueries.GetCountOrderToday;
 using Restaurant.Application.Queries.OrderQueries.GetOrder;
 using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -50,9 +51,9 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] int? status, [FromQuery] OrderType orderType = OrderType.COMMON)
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] int? status, [FromQuery] DateTime? date, [FromQuery] OrderType orderType = OrderType.COMMON)
         {
-            var query = new GetAllOrdersQuery(pageFilter, orderType, status);
+            var query = new GetAllOrdersQuery(pageFilter, orderType, status, date);
             var order = await _mediator.Send(query);
             return Ok(order);
         }

@@ -9,8 +9,8 @@ namespace Restaurant.Core.Repositories
 {
     public  interface IOrderRepository : IBaseRepository<Order>
     {
-        Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status);
-        Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status);
+        Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date);
+        Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date);
         Task<CommonOrder> GetCommonOrderByIdAsync(int id);
         Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id);
         Task<int> GetCountOrderToday(DateTime today);

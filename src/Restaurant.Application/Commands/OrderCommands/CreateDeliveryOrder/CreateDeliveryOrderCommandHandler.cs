@@ -28,7 +28,7 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
             entity.Type = "Delivery";
             entity.Items.ToList().ForEach(i =>
             {
-                i.Status = Core.Enums.ItemOrderStatus.PENDING;
+                i.Status = Core.Enums.OrderItemStatus.PENDING;
                 i.CreatedAt = DateTime.Now;
             });
 

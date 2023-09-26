@@ -6,7 +6,7 @@ namespace Restaurant.Core.Entities
 {
     public class OrderItem : Entity
     {
-        public OrderItem(int quantity, ItemOrderStatus status, Product product, Order order)
+        public OrderItem(int quantity, OrderItemStatus status, Product product, Order order)
         {
             Quantity = quantity;
             Status = status;
@@ -20,7 +20,7 @@ namespace Restaurant.Core.Entities
 
         public int Quantity { get; set; }
 
-        public ItemOrderStatus Status{ get; set; }
+        public OrderItemStatus Status{ get; set; }
 
         public Product Product { get; set; }
         [JsonIgnore]
