@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
+using Restaurant.Application.Queries.CategoryQueries.GetByCategoryType;
+using Restaurant.Application.ViewModels.Page;
+using Restaurant.Core.Enums;
 using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
@@ -24,6 +27,14 @@ namespace Restaurant.API.Controllers
             var id = await _mediator.Send(command);
 
             return Ok(id);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] CategoryType? categoryType, [FromQuery] string name)
+        {
+            var query = new GetAllCategoriesQuery(pageFilter, categoryType, name);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

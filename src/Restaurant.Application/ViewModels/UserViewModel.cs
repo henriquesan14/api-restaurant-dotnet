@@ -1,4 +1,5 @@
 ﻿using Restaurant.Core.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace Restaurant.Application.ViewModels
@@ -16,5 +17,8 @@ namespace Restaurant.Application.ViewModels
         public IEnumerable<UserRole> Roles { get; set; }
 
         public IEnumerable<Address> Addresses { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }
