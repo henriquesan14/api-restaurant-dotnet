@@ -11,6 +11,7 @@ namespace Restaurant.Core.Repositories
     {
         Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date);
         Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date);
+        Task<IReadOnlyCollection<Order>> GetOrdersByClient(int pageSize, int pageNumber, int clientId);
         Task<CommonOrder> GetCommonOrderByIdAsync(int id);
         Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id);
         Task<int> GetCountOrderToday(DateTime today);

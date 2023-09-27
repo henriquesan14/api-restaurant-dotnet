@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Restaurant.Core.Entities;
+using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories;
 using Restaurant.Infra.Repositories.Base;
 using System;
@@ -38,6 +39,17 @@ namespace Restaurant.Infra.Repositories
                 .Where(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
                 .Include(o => o.Client)
                                 .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                    .ToListAsync();
+        }
+
+        public async Task<IReadOnlyCollection<Order>> GetOrdersByClient(int pageSize, int pageNumber, int clientId)
+        {
+            return await _context.Set<Order>()
+                .AsNoTracking()
+                .Where(o => o.ClientId == clientId)
+                .Include(o => o.Client)
+                .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();
         }

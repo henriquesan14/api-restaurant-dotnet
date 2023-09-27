@@ -18,7 +18,7 @@ namespace Restaurant.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("byUser/{userId}")]
         public async Task<IActionResult> GetByUser(int userId)
         {
             var query = new GetAddressByUserQuery(userId);

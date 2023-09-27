@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
 using Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder;
 using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
+using Restaurant.Application.Commands.OrderCommands.UpdateOrderStatusCommand;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
+using Restaurant.Application.Queries.OrderQueries.GetAllOrdersByClient;
 using Restaurant.Application.Queries.OrderQueries.GetCountOrderToday;
 using Restaurant.Application.Queries.OrderQueries.GetOrder;
 using Restaurant.Application.Queries.OrderQueries.GetTotalOrders;
@@ -67,17 +69,6 @@ namespace Restaurant.API.Controllers
             return Ok(order);
         }
 
-        [HttpPut("itens")]
-        public async Task<IActionResult> UpdateStatusItem([FromBody] UpdateOrderItemCommand command)
-        {
-            var result = await _mediator.Send(command);
-            if(result == 0)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
-
 
         [HttpGet("countToday")]
         public async Task<IActionResult> GetCountOrderToday()
@@ -91,6 +82,24 @@ namespace Restaurant.API.Controllers
         {
             var result = await _mediator.Send(new GetTotalOrdersQuery(startDate, endDate));
             return Ok(result);
+        }
+
+        [HttpGet("byClient/{clientId}")]
+        public async Task<IActionResult> GetOrdersByClient(int clientId, [FromQuery] PageFilter pageFilter)
+        {
+            var result = await _mediator.Send(new GetOrdersByClientQuery(pageFilter, clientId));
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateOrderStatus([FromBody] UpdateOrderStatusCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }

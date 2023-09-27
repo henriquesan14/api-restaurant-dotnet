@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
 using Restaurant.Application.Queries.OrderItemQueries.GetAllOrdemItem;
 using Restaurant.Application.Queries.OrderItemQueries.GetCountOrderItemByStatus;
 using Restaurant.Application.Queries.OrderItemQueries.GetCountOrderItemToday;
@@ -43,6 +44,17 @@ namespace Restaurant.API.Controllers
         {
             var result = await _mediator.Send(new GetCountOrderItemByStatusQuery(status));
             return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateStatusItem([FromBody] UpdateOrderItemCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }
