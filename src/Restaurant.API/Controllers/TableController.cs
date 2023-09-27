@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.TableCommands.CreateTable;
+using Restaurant.Application.Queries.TableQueries.GetAllTables;
+using Restaurant.Core.Enums;
 using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
@@ -14,6 +16,14 @@ namespace Restaurant.API.Controllers
         public TableController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] TableStatus? status)
+        {
+            var query = new GetAllTablesQuery(status);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
         [HttpPost]
