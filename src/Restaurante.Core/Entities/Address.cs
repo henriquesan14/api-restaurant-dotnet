@@ -25,5 +25,6 @@ namespace Restaurant.Core.Entities
 
         [JsonIgnore]
         public User User { get; set; }
+        public int UserId { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Restaurant.API.Extensions
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ITableRepository, TableRepository>();
             services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();

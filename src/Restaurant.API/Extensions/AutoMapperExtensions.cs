@@ -16,6 +16,7 @@ namespace Restaurant.API.Extensions
                 cfg.AddProfile<OrderMapper>();
                 cfg.AddProfile<TableMapper>();
                 cfg.AddProfile<OrderItemMapper>();
+                cfg.AddProfile<AddressMapper>();
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);
