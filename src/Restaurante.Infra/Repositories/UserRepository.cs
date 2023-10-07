@@ -16,6 +16,8 @@ namespace Restaurant.Infra.Repositories
         {
             return await _context.Users
                 .AsNoTracking()
+                .Include(u => u.Roles)
+                .ThenInclude(r => r.Role)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
     }

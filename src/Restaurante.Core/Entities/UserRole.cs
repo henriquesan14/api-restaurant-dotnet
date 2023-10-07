@@ -1,12 +1,11 @@
 ﻿using Restaurant.Core.Entities.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
     public  class UserRole : Entity
     {
+        [JsonIgnore]
         public User User { get; set; }
 
         public Role Role { get; set; }
