@@ -110,7 +110,7 @@ namespace Restaurant.Infra.Migrations
                     Number = table.Column<string>(nullable: true),
                     District = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,8 +119,7 @@ namespace Restaurant.Infra.Migrations
                         name: "FK_Addresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -162,6 +161,7 @@ namespace Restaurant.Infra.Migrations
                     Type = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false),
                     ClientId = table.Column<int>(nullable: false),
+                    ValueTotal = table.Column<decimal>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     TableId1 = table.Column<int>(nullable: true),
                     TableId = table.Column<int>(nullable: true),
@@ -187,14 +187,12 @@ namespace Restaurant.Infra.Migrations
                         name: "FK_Orders_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Users_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Tables_TableId1",
                         column: x => x.TableId1,
@@ -243,7 +241,7 @@ namespace Restaurant.Infra.Migrations
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     AmountReceived = table.Column<decimal>(nullable: false),
                     PaymentMethod = table.Column<int>(nullable: false),
-                    OrderId = table.Column<int>(nullable: true)
+                    OrderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,7 +251,7 @@ namespace Restaurant.Infra.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

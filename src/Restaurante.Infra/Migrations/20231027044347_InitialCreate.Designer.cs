@@ -10,14 +10,14 @@ using Restaurant.Infra;
 namespace Restaurant.Infra.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20220929035133_InitialCreate")]
+    [Migration("20231027044347_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.25")
+                .HasAnnotation("ProductVersion", "3.1.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -43,7 +43,7 @@ namespace Restaurant.Infra.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("ZipCode")
@@ -109,6 +109,9 @@ namespace Restaurant.Infra.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("ValueTotal")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
@@ -167,7 +170,7 @@ namespace Restaurant.Infra.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("PaymentMethod")
@@ -357,7 +360,9 @@ namespace Restaurant.Infra.Migrations
                 {
                     b.HasOne("Restaurant.Core.Entities.User", "User")
                         .WithMany("Addresses")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Restaurant.Core.Entities.Order", b =>
@@ -365,7 +370,7 @@ namespace Restaurant.Infra.Migrations
                     b.HasOne("Restaurant.Core.Entities.User", "Client")
                         .WithMany("Orders")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Restaurant.Core.Entities.Table", null)
@@ -390,9 +395,11 @@ namespace Restaurant.Infra.Migrations
 
             modelBuilder.Entity("Restaurant.Core.Entities.Payment", b =>
                 {
-                    b.HasOne("Restaurant.Core.Entities.Order", null)
+                    b.HasOne("Restaurant.Core.Entities.Order", "Order")
                         .WithMany("Payments")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Restaurant.Core.Entities.Product", b =>
@@ -433,9 +440,9 @@ namespace Restaurant.Infra.Migrations
             modelBuilder.Entity("Restaurant.Core.Entities.DeliveryOrder", b =>
                 {
                     b.HasOne("Restaurant.Core.Entities.Address", "Address")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

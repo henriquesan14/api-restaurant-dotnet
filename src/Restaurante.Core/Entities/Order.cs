@@ -26,6 +26,8 @@ namespace Restaurant.Core.Entities
         public IEnumerable<OrderItem> Items { get; set; }
 
         public IEnumerable<Payment> Payments { get; set; }
+
+        public decimal ValueTotal { get; set; }
         public decimal Total {
             get { return Items != null ? Items.Sum(i => i.SubTotal) : 0; }
         }
