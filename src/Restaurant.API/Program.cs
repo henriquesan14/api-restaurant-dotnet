@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
-builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 builder.Services.AutoMapperConfig();
 builder.Services.AddInfrastructure();
 builder.Services.SwaggerConfig();
