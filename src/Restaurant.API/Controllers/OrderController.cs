@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
 using Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder;
 using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
@@ -9,6 +10,7 @@ using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrdersByClient;
 using Restaurant.Application.Queries.OrderQueries.GetCountOrderToday;
 using Restaurant.Application.Queries.OrderQueries.GetOrder;
+using Restaurant.Application.Queries.OrderQueries.GetTotalDailyByMonth;
 using Restaurant.Application.Queries.OrderQueries.GetTotalOrders;
 using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
@@ -88,6 +90,13 @@ namespace Restaurant.API.Controllers
         public async Task<IActionResult> GetOrdersByClient(int clientId, [FromQuery] PageFilter pageFilter)
         {
             var result = await _mediator.Send(new GetOrdersByClientQuery(pageFilter, clientId));
+            return Ok(result);
+        }
+
+        [HttpGet("totalDailyByMonth")]
+        public async Task<IActionResult> GetTotalDailyByMonth([FromQuery] int? month)
+        {
+            var result = await _mediator.Send(new GetTotalDailyByMonthQuery(month));
             return Ok(result);
         }
 
