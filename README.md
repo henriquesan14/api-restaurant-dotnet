@@ -42,7 +42,7 @@ Também é preciso configurar as váriaveis de conexão com banco de dados no ar
 
 ### 🎲 Rodando o Back End (servidor)
 
-#### Rodando Confitec.API
+#### Rodando Restaurant.API
 
 ```bash
 # Clone este repositório
@@ -51,7 +51,7 @@ $ git clone <https://github.com/henriquesan14/api-restaurant-dotnet.git>
 # Acesse a pasta do projeto no terminal/cmd
 $ cd api-restaurant-dotnet
 
-# Vá para a pasta da Confitec.API
+# Vá para a pasta da Restaurant.API
 $ cd src/Restaurant.API
 
 # Execute a aplicação com o comando do dotnet
