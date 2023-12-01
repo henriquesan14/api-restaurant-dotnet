@@ -13,9 +13,9 @@
 - [x] Gerenciar as mesas( visualizar,cadastrar, editar e excluir)
 - [x] Gerenciar os usuários( visualizar,cadastrar)
 - [x] Fechar conta (finalizar pedido com pagamento pendente)
-- [] Upload imagens dos produtos e usuários no Storage da Azure
-- [] Caching com Redis
-- [] Logs, monitoramento da API
+- [ ] Upload imagens dos produtos e usuários no Storage da Azure
+- [ ] Caching com Redis
+- [ ] Logs, monitoramento da API
 
 
 ### 🛠 Tecnologias
