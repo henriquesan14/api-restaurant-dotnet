@@ -1,17 +1,19 @@
 ﻿using Restaurant.Core.Entities.Base;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
     public class Address : Entity
     {
-        public Address(string street, string number, string district, string zipCode, User user)
+        public Address(string street, string number, string district, string zipCode, User user, IEnumerable<DeliveryOrder> orders)
         {
             Street = street;
             Number = number;
             District = district;
             ZipCode = zipCode;
             User = user;
+            Orders = orders;
         }
 
         public Address()
@@ -26,5 +28,8 @@ namespace Restaurant.Core.Entities
         [JsonIgnore]
         public User User { get; set; }
         public int UserId { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<DeliveryOrder> Orders { get; set; }
     }
 }

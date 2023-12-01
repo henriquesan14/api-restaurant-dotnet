@@ -24,6 +24,31 @@ namespace Restaurant.Infra
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Items)
+                .WithOne(o => o.Order)
+                .HasForeignKey(o => o.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Payments)
+                .WithOne(o => o.Order)
+                .HasForeignKey(o => o.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Address>()
+                .HasMany(o => o.Orders)
+                .WithOne(o => o.Address)
+                .HasForeignKey(o => o.AddressId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<User>()
+                .HasMany(o => o.Orders)
+                .WithOne(o => o.Client)
+                .HasForeignKey(o => o.ClientId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<User>()
+                .HasMany(o => o.Addresses)
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 

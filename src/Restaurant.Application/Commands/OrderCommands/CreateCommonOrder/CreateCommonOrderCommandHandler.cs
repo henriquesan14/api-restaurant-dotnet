@@ -13,28 +13,35 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ITableRepository _tableRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public CreateCommonOrderCommandHandler(IOrderRepository orderRepository, ITableRepository tableRepository, IMapper mapper)
+        public CreateCommonOrderCommandHandler(IOrderRepository orderRepository, ITableRepository tableRepository, IMapper mapper, IProductRepository productRepository)
         {
             _orderRepository = orderRepository;
             _tableRepository = tableRepository;
             _mapper = mapper;
+            _productRepository = productRepository;
         }
 
         public async Task<int> Handle(CreateCommonOrderCommand request, CancellationToken cancellationToken)
         {
             // TODO: implementar lógica de autorização
             var entity = _mapper.Map<CommonOrder>(request);
+            decimal valueTotal = 0; 
             entity.Status = Core.Enums.OrderStatus.PENDING;
             entity.EmployeeId = request.EmployeeId;
             entity.Type = "Common";
-            entity.Items.ToList().ForEach(i =>
+
+            entity.Items.ToList().ForEach(async i =>
             {
                 i.Status = Core.Enums.OrderItemStatus.PENDING;
                 i.CreatedAt = DateTime.Now;
+                var product = await _productRepository.GetByIdAsync(i.ProductId);
+                valueTotal += product.Price * i.Quantity;
             });
-            
+            entity.ValueTotal = valueTotal;
+
             await _tableRepository.UpdateStatusAsync(entity.TableId, Core.Enums.TableStatus.BUSY);
             var result = await _orderRepository.AddAsync(entity);
             return result.Id;

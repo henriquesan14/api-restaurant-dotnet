@@ -1,5 +1,5 @@
 ﻿using Restaurant.Core.Entities;
-using Restaurant.Core.Enums;
+using Restaurant.Core.Entities.Statistic;
 using Restaurant.Core.Repositories.Base;
 using System;
 using System.Collections.Generic;
@@ -16,5 +16,6 @@ namespace Restaurant.Core.Repositories
         Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id);
         Task<int> GetCountOrderToday(DateTime today);
         Task<decimal> GetTotalOrders(DateTime startDate, DateTime endDate);
+        Task<List<StatisticOrder>> GetTotalDailyByMonth(int month);
     }
 }

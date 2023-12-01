@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Restaurant.Core.Entities;
+using Restaurant.Core.Entities.Statistic;
 using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories;
 using Restaurant.Infra.Repositories.Base;
@@ -93,6 +94,19 @@ namespace Restaurant.Infra.Repositories
                         WHERE CONVERT(date, oi.CreatedAt )  >= @StartDate AND CONVERT(date, oi.CreatedAt ) <= @EndDate";
             var result = await _context.Database.GetDbConnection().QueryAsync<decimal>(query, new { StartDate = startDate, EndDate = endDate });
             return result.FirstOrDefault();
+        }
+
+        public async Task<List<StatisticOrder>> GetTotalDailyByMonth(int month)
+        {
+            var query = @"SELECT DAY(o.CreatedAt ) AS Day,
+                            MONTH(o.CreatedAt ) AS Month,
+                            SUM(o.ValueTotal ) AS Total 
+                            FROM Orders o 
+                            WHERE MONTH(o.CreatedAt) = @Month
+                            GROUP BY DAY(o.CreatedAt ),MONTH(o.CreatedAt) 
+                            ORDER BY DAY(o.CreatedAt) ASC";
+            var result = await _context.Database.GetDbConnection().QueryAsync<StatisticOrder>(query, new { Month = month });
+            return result.ToList();
         }
     }
 }

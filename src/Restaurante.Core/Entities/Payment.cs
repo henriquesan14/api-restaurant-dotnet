@@ -17,5 +17,7 @@ namespace Restaurant.Core.Entities
 
         public decimal AmountReceived { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
+        public Order Order { get; set; }
+        public int OrderId { get; set; }
     }
 }

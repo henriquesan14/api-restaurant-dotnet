@@ -26,12 +26,11 @@ namespace Restaurant.Core.Entities
         public IEnumerable<OrderItem> Items { get; set; }
 
         public IEnumerable<Payment> Payments { get; set; }
-        public decimal Total {
-            get { return Items != null ? Items.Sum(i => i.SubTotal) : 0; }
-        }
+
+        public decimal ValueTotal { get; set; }
 
         public bool IsPaid {
-            get { return Payments != null ? Payments.Sum(p => p.AmountReceived) >= Total : false; }
+            get { return Payments != null ? Payments.Sum(p => p.AmountReceived) >= ValueTotal : false; }
         }
     }
 }
