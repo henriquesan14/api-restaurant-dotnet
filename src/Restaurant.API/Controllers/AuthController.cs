@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Application.Commands.UserCommands.RegisterUserCommand;
 using Restaurant.Application.Queries.UserQueries;
 using System.Threading.Tasks;
 
@@ -23,6 +24,20 @@ namespace Restaurant.API.Controllers
             {
                 return Unauthorized(new {
                     Message = "Usuário/Senha inválido(s)"
+                });
+            }
+            return Ok(result);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if(result == 0)
+            {
+                return BadRequest(new
+                {
+                    Message = "Já existe um usuário com este email"
                 });
             }
             return Ok(result);
