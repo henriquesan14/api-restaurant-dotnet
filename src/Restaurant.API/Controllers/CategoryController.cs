@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
+using Restaurant.Application.Commands.CategoryCommands.DeleteCategory;
+using Restaurant.Application.Commands.CategoryCommands.UpdateCategory;
 using Restaurant.Application.Queries.CategoryQueries.GetByCategoryType;
 using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
@@ -35,6 +37,28 @@ namespace Restaurant.API.Controllers
             var query = new GetAllCategoriesQuery(pageFilter, categoryType, name);
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
+        {
+            var id = await _mediator.Send(command);
+            if(id == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteCategoryCommand command)
+        {
+            var id = await _mediator.Send(command);
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }

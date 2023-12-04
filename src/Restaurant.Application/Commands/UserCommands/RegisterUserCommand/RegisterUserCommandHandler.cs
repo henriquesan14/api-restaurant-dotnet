@@ -37,9 +37,21 @@ namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
                     CreatedAt = DateTime.Now
                 }
             };
+            var roles = new List<UserRole>()
+            {
+                new UserRole
+                {
+                    Role = new Role
+                    {
+                        Name = "User",
+                        CreatedAt = DateTime.Now
+                    }
+                }
+            };
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
             var user = _mapper.Map<User>(request);
             user.Addresses = addresses;
+            user.Roles = roles;
             var userCreated = await _userRepository.AddAsync(user);
             return userCreated.Id;
         }
