@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.TableCommands.CreateTable;
+using Restaurant.Application.Commands.TableCommands.DeleteTable;
+using Restaurant.Application.Commands.TableCommands.UpdateTable;
 using Restaurant.Application.Queries.TableQueries.GetAllTables;
 using Restaurant.Core.Enums;
 using System.Threading.Tasks;
@@ -31,6 +33,28 @@ namespace Restaurant.API.Controllers
         {
             var id = await _mediator.Send(command);
             return Ok(id);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateTableCommand command)
+        {
+            var id = await _mediator.Send(command);
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteTableCommand command)
+        {
+            var id = await _mediator.Send(command);
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }

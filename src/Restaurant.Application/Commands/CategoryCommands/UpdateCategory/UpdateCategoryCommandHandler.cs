@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace Restaurant.Application.Commands.CategoryCommands.UpdateCategory
             {
                 return 0;
             }
-            var categoryEntity = _mapper.Map<Category>(category);
+            var categoryEntity = _mapper.Map(request, category);
             await _categoryRepository.UpdateAsync(categoryEntity);
             return categoryEntity.Id;
         }
