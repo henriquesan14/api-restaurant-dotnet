@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Restaurant.Application.Commands.TableCommands.CreateTable;
+using Restaurant.Application.Commands.TableCommands.UpdateTable;
 using Restaurant.Application.ViewModels;
 using Restaurant.Core.Entities;
 
@@ -11,6 +12,7 @@ namespace Restaurant.Application.Mappers
         {
             CreateMap<CreateTableCommand, Table>().ReverseMap();
             CreateMap<Table, TableViewModel>().ReverseMap();
+            CreateMap<UpdateTableCommand, Table>().ReverseMap();
         }
     }
 }

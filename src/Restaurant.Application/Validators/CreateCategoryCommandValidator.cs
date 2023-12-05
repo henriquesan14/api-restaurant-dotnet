@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
 using Restaurant.Core.Entities;
 
 namespace Restaurant.Application.Validators
 {
-    public class CreateCategoryCommandValidator : AbstractValidator<Category>
+    public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
     {
         public CreateCategoryCommandValidator()
         {
