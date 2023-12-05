@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Restaurant.Application.Commands.TableCommands.CreateTable;
+using Restaurant.Application.Commands.TableCommands.UpdateTable;
 
 namespace Restaurant.Application.Validators
 {
-    public class CreateTableCommandValidator : AbstractValidator<CreateTableCommand>
+    public class UpdateTableCommandValidator : AbstractValidator<UpdateTableCommand>
     {
-        public CreateTableCommandValidator()
+        public UpdateTableCommandValidator()
         {
             RuleFor(u => u.Name)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório");
