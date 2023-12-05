@@ -50,11 +50,12 @@ namespace Restaurant.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] DeleteCategoryCommand command)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var id = await _mediator.Send(command);
-            if (id == 0)
+            var command = new DeleteCategoryCommand(id);
+            var result = await _mediator.Send(command);
+            if (result == 0)
             {
                 return NotFound();
             }
