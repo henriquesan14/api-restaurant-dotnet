@@ -13,7 +13,7 @@ namespace Restaurant.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,6 +23,7 @@ namespace Restaurant.API.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
         {
@@ -39,6 +40,7 @@ namespace Restaurant.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
         {
@@ -50,6 +52,7 @@ namespace Restaurant.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

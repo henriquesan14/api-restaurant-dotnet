@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.ProductCommands.CreateProduct;
 using Restaurant.Application.Commands.ProductCommands.RemoveProduct;
@@ -12,6 +13,7 @@ namespace Restaurant.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -41,6 +43,7 @@ namespace Restaurant.API.Controllers
             return Ok(product);
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
@@ -48,6 +51,7 @@ namespace Restaurant.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateProductCommand command)
         {
@@ -59,6 +63,7 @@ namespace Restaurant.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

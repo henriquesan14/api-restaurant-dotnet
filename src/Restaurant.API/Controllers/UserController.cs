@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.UserCommands.CreateUserCommand;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Restaurant.API.Controllers
         }
 
 
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {

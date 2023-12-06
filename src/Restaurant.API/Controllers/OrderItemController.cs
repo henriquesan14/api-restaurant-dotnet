@@ -46,6 +46,7 @@ namespace Restaurant.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateStatusItem([FromBody] UpdateOrderItemCommand command)
         {

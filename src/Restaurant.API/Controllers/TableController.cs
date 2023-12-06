@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.TableCommands.CreateTable;
 using Restaurant.Application.Commands.TableCommands.DeleteTable;
@@ -11,6 +12,7 @@ namespace Restaurant.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TableController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -28,6 +30,7 @@ namespace Restaurant.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTableCommand command)
         {
@@ -35,6 +38,7 @@ namespace Restaurant.API.Controllers
             return Ok(id);
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTableCommand command)
         {
@@ -46,6 +50,7 @@ namespace Restaurant.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
