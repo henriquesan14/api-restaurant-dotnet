@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Restaurant.API.Extensions;
 using Restaurant.API.Filters;
+using Restaurant.Application.Consumers;
 using Restaurant.Application.Validators;
 using Restaurant.Infra;
 using System;
@@ -17,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+builder.Services.AddHostedService<PaymentApprovedConsumer>();
 builder.Services.AutoMapperConfig();
 builder.Services.AddInfrastructure();
 builder.Services.SwaggerConfig();
