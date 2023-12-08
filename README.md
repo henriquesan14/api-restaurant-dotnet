@@ -12,7 +12,7 @@
 - [x] Gerenciar as categorias de produtos( visualizar,cadastrar, editar e excluir)
 - [x] Gerenciar as mesas( visualizar,cadastrar, editar e excluir)
 - [x] Gerenciar os usuários( visualizar,cadastrar)
-- [x] Fechar conta (finalizar pedido com pagamento pendente)
+- [x] Se comunicar via mensageria com microsserviço de pagamento
 - [ ] Upload imagens dos produtos e usuários no Storage da Azure
 - [ ] Caching com Redis
 - [ ] Logs, monitoramento da API
@@ -24,6 +24,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [.NET](https://dotnet.microsoft.com/en-us/)
 - [SQLServer](https://www.microsoft.com/pt-br/sql-server/sql-server-2019)
 - [Microsoft Azure](https://azure.microsoft.com/pt-br/)
+- [RabbitMQ](https://www.rabbitmq.com/)
 
 ### 🛠 Padrões Utilizados
 
