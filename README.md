@@ -12,7 +12,7 @@
 - [x] Gerenciar as categorias de produtos( visualizar,cadastrar, editar e excluir)
 - [x] Gerenciar as mesas( visualizar,cadastrar, editar e excluir)
 - [x] Gerenciar os usuários( visualizar,cadastrar)
-- [x] Se comunicar via mensageria com microsserviço de pagamento
+- [x] Se comunicar via mensageria com microsserviço de pagamento (RabbitMQ)
 - [ ] Upload imagens dos produtos e usuários no Storage da Azure
 - [ ] Caching com Redis
 - [ ] Logs, monitoramento da API
