@@ -38,8 +38,10 @@ As seguintes padrões foram usados na construção do projeto:
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [.NET](https://dotnet.microsoft.com/en-us/).
 [SQLServer](https://www.microsoft.com/pt-br/sql-server/sql-server-2019) ou subir container utilizando o [Docker](https://www.docker.com/).
+[RabbitMQ](https://www.rabbitmq.com/) ou subir container utilizando o [Docker](https://www.docker.com/).
+Também é preciso configurar as váriaveis de conexão com banco de dados e host do RabbitMQ no arquivo `api-restaurant-dotnet/src/Restaurant.API/appsettings.Development.json`.
 Além disto é bom ter um editor para trabalhar com o código como [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/).
-Também é preciso configurar as váriaveis de conexão com banco de dados no arquivo `api-restaurant-dotnet/src/Restaurant.API/appsettings.Development.json`.
+
 
 ### 🎲 Rodando o Back End (servidor)
 
