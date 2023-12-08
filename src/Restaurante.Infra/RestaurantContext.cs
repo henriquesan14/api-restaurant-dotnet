@@ -20,17 +20,11 @@ namespace Restaurant.Infra
 
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.Items)
-                .WithOne(o => o.Order)
-                .HasForeignKey(o => o.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.Payments)
                 .WithOne(o => o.Order)
                 .HasForeignKey(o => o.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);

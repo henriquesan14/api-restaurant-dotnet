@@ -55,6 +55,15 @@ namespace Restaurant.Infra.Repositories
                                     .ToListAsync();
         }
 
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _context.Set<Order>()
+                .AsNoTracking()
+                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                                    .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+
         public async Task<CommonOrder> GetCommonOrderByIdAsync(int id)
         {
             return await _context.Set<CommonOrder>()

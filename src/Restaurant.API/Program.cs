@@ -1,17 +1,16 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Restaurant.Infra;
 using Microsoft.Extensions.DependencyInjection;
-using Restaurant.API.Extensions;
-using System.Text;
-using Restaurant.API.Filters;
-using FluentValidation.AspNetCore;
-using Restaurant.Application.Validators;
-using System.Reflection;
 using Microsoft.Extensions.Hosting;
-using FluentValidation;
+using Restaurant.API.Extensions;
+using Restaurant.API.Filters;
+using Restaurant.Application.Validators;
+using Restaurant.Infra;
 using System;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 

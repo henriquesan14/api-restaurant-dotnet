@@ -2,7 +2,6 @@
 using Restaurant.Core.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Restaurant.Application.ViewModels
 {
@@ -18,15 +17,9 @@ namespace Restaurant.Application.ViewModels
         public Address Address { get; set; }
         public IEnumerable<OrderItem> Items { get; set; }
 
-        public IEnumerable<Payment> Payments { get; set; }
-
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public decimal ValueTotal { get; set; }
 
-        public bool IsPaid
-        {
-            get { return Payments != null ? Payments.Sum(p => p.AmountReceived) >= ValueTotal : false; }
-        }
     }
 }

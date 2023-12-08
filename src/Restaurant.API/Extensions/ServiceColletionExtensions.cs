@@ -3,6 +3,7 @@ using Restaurant.Application.Services;
 using Restaurant.Core.Repositories;
 using Restaurant.Core.Repositories.Base;
 using Restaurant.Core.Services;
+using Restaurant.Infra.MessageBus;
 using Restaurant.Infra.Repositories;
 using Restaurant.Infra.Repositories.Base;
 
@@ -25,6 +26,8 @@ namespace Restaurant.API.Extensions
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IMessageBusService, MessageBusService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }

@@ -29,7 +29,7 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
             // TODO: implementar lógica de autorização
             var entity = _mapper.Map<CommonOrder>(request);
             decimal valueTotal = 0; 
-            entity.Status = Core.Enums.OrderStatus.PENDING;
+            entity.Status = Core.Enums.OrderStatus.CREATED;
             entity.EmployeeId = request.EmployeeId;
             entity.Type = "Common";
 

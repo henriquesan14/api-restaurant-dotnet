@@ -100,13 +100,16 @@ namespace Restaurant.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateOrderStatus([FromBody] UpdateOrderStatusCommand command)
+        [HttpPost("processPayment")]
+        public async Task<IActionResult> ProcessPayment([FromBody] ProcessOrderPaymentCommand command)
         {
             var result = await _mediator.Send(command);
             if (result == 0)
             {
-                return NotFound();
+                return BadRequest(new
+                {
+                    Message = "Pagamento não processado."
+                });
             }
             return NoContent();
         }

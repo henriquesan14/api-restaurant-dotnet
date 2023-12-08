@@ -27,7 +27,7 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
             // TODO: implementar lógica de autorização
             var entity = _mapper.Map<DeliveryOrder>(request);
             decimal valueTotal = 0;
-            entity.Status = Core.Enums.OrderStatus.PENDING;
+            entity.Status = Core.Enums.OrderStatus.CREATED;
             entity.Type = "Delivery";
             entity.ValueTotal = entity.Items.Sum(i => i.SubTotal);
             entity.Items.ToList().ForEach(async i =>
