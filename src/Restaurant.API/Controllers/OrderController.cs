@@ -108,10 +108,10 @@ namespace Restaurant.API.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Pagamento não processado."
+                    Message = "Pagamento não pôde ser processado."
                 });
             }
-            return NoContent();
+            return Accepted();
         }
     }
 }
