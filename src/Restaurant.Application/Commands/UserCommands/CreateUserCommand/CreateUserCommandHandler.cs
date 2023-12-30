@@ -2,6 +2,7 @@
 using MediatR;
 using Restaurant.Application.ViewModels;
 using Restaurant.Core.Entities;
+using Restaurant.Core.Exceptions;
 using Restaurant.Core.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Restaurant.Application.Commands.UserCommands.CreateUserCommand
             User userExist = await _repository.GetByEmail(request.Email);
             if (userExist != null)
             {
-                return null;
+                throw new UserAlreadyExistsException("Já possui um usuário com este email.");
             }
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
             User userCreated = await _repository.AddAsync(_mapper.Map<User>(request));

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Restaurant.Core.Entities;
+using Restaurant.Core.Exceptions;
 using Restaurant.Core.Repositories;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
             User userExist = await _userRepository.GetByEmail(request.Email);
             if (userExist != null)
             {
-                return 0;
+                throw new UserAlreadyExistsException("Já possui um usuário com este email");
             }
             var addresses = new List<Address>() {
                 new Address

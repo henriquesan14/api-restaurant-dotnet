@@ -24,7 +24,11 @@ builder.Services.AddInfrastructure();
 builder.Services.SwaggerConfig();
 var key = Encoding.ASCII.GetBytes(builder.Configuration["TokenSettings:Secret"]);
 builder.Services.AuthConfig(key);
-builder.Services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)));
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(typeof(ValidationFilter));
+    options.Filters.Add(typeof(CustomExceptionFilter));
+});
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCommonOrderCommandValidator>();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Restaurant.Application.ViewModels;
+using Restaurant.Core.Exceptions;
 using Restaurant.Core.Repositories;
 using System.Collections.Generic;
 using System.Threading;
@@ -22,6 +23,10 @@ namespace Restaurant.Application.Queries.AddressQueries.GetAddressByUser
         public async Task<List<AddressViewModel>> Handle(GetAddressByUserQuery request, CancellationToken cancellationToken)
         {
             var result = await _addressRepository.GetAddressByUser(request.UserId);
+            if(result == null)
+            {
+                throw new NotFoundException("Não existe esse endereço");
+            }
             var viewModel = _mapper.Map<List<AddressViewModel>>(result);
             return viewModel;
         }
