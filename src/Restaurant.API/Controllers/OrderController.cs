@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
 using Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder;
-using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
 using Restaurant.Application.Commands.OrderCommands.UpdateOrderStatusCommand;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrders;
 using Restaurant.Application.Queries.OrderQueries.GetAllOrdersByClient;
@@ -25,7 +23,7 @@ namespace Restaurant.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class OrderController : ControllerBase
+    public class OrderController : AuthorizedController
     {
         private readonly IMediator _mediator;
 
@@ -39,8 +37,7 @@ namespace Restaurant.API.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
-            var userId = claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            command.EmployeeId = int.Parse(userId);
+            command.EmployeeId = int.Parse(UserId);
             var id = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
