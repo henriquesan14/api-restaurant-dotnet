@@ -1,23 +1,19 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Restaurant.API.Extensions;
 using Restaurant.API.Filters;
 using Restaurant.Application.Consumers;
 using Restaurant.Application.Validators;
 using Restaurant.Infra;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
-builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+builder.Services.AddDbContext<RestaurantContext>(options => options.UseNpgsql(connectionString));
+
 builder.Services.AddHostedService<PaymentApprovedConsumer>();
 builder.Services.AutoMapperConfig();
 builder.Services.AddInfrastructure();

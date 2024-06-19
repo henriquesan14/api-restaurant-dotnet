@@ -1,6 +1,5 @@
 ﻿using Restaurant.Core.Entities.Base;
 using Restaurant.Core.Enums;
-using System.Collections.Generic;
 
 namespace Restaurant.Core.Entities
 {
