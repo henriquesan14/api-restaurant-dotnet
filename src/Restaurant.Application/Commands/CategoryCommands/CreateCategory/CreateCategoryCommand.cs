@@ -7,6 +7,6 @@ namespace Restaurant.Application.Commands.CategoryCommands.CreateCategory
     {
         public string Name { get; set; }
 
-        public CategoryType CategoryType { get; set; }
+        public CategoryTypeEnum CategoryType { get; set; }
     }
 }

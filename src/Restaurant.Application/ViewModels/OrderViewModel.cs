@@ -9,7 +9,7 @@ namespace Restaurant.Application.ViewModels
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatusEnum Status { get; set; }
         public User Client { get; set; }
         public Table Table { get; set; }
         public User Employee { get; set; }

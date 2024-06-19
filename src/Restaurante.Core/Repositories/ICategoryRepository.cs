@@ -8,6 +8,6 @@ namespace Restaurant.Core.Repositories
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
-        Task<IReadOnlyList<Category>> GetAllAsync(int pageSize, int pageNumber, CategoryType? category, string name);
+        Task<IReadOnlyList<Category>> GetAllAsync(int pageSize, int pageNumber, CategoryTypeEnum? category, string name);
     }
 }

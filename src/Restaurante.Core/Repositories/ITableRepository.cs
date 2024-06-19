@@ -8,7 +8,7 @@ namespace Restaurant.Core.Repositories
 {
     public interface ITableRepository : IBaseRepository<Table>
     {
-        Task<IReadOnlyCollection<Table>> GetAllTables(TableStatus? status);
-        Task UpdateStatusAsync(int id, TableStatus status);
+        Task<IReadOnlyCollection<Table>> GetAllTables(TableStatusEnum? status);
+        Task UpdateStatusAsync(int id, TableStatusEnum status);
     }
 }

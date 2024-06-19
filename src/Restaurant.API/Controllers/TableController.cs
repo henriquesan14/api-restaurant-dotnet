@@ -23,7 +23,7 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] TableStatus? status)
+        public async Task<IActionResult> GetAll([FromQuery] TableStatusEnum? status)
         {
             var query = new GetAllTablesQuery(status);
             var result = await _mediator.Send(query);

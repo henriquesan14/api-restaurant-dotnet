@@ -5,7 +5,7 @@ namespace Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand
 {
     public class UpdateOrderItemCommand : IRequest<int>
     {
-        public OrderItemStatus Status { get; set; }
+        public OrderItemStatusEnum Status { get; set; }
         public int OrderItemId { get; set; }
     }
 }

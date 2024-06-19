@@ -7,6 +7,6 @@ namespace Restaurant.Application.Commands.TableCommands.UpdateTable
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public TableStatus Status { get; set; }
+        public TableStatusEnum Status { get; set; }
     }
 }

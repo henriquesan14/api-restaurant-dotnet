@@ -8,9 +8,9 @@ namespace Restaurant.Application.Queries.OrderQueries.GetOrder
     {
         public int Id { get; set; }
 
-        public OrderType OrderType { get; set; }
+        public OrderTypeEnum OrderType { get; set; }
 
-        public GetOrderQuery(int id, OrderType orderType)
+        public GetOrderQuery(int id, OrderTypeEnum orderType)
         {
             Id = id;
             OrderType = orderType;

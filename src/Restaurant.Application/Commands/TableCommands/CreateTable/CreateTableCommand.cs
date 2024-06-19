@@ -6,6 +6,6 @@ namespace Restaurant.Application.Commands.TableCommands.CreateTable
     public class CreateTableCommand : IRequest<int>
     {
         public string Name { get; set; }
-        public TableStatus Status { get; set; }
+        public TableStatusEnum Status { get; set; }
     }
 }

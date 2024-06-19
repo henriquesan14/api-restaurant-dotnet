@@ -14,7 +14,7 @@ namespace Restaurant.Infra.Repositories
         {
         }
 
-        public async Task<IReadOnlyList<Category>> GetAllAsync(int pageSize, int pageNumber,CategoryType? category, string name)
+        public async Task<IReadOnlyList<Category>> GetAllAsync(int pageSize, int pageNumber,CategoryTypeEnum? category, string name)
         {
             var result = await _context.Set<Category>()
                 .AsNoTracking()

@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Core.Enums
 {
-    public enum TableStatus
+    public enum TableStatusEnum
     {
         AVAILABLE,
         BUSY

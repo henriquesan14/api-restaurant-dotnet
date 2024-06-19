@@ -6,7 +6,7 @@ namespace Restaurant.Core.Entities
 {
     public class OrderItem : Entity
     {
-        public OrderItem(int quantity, OrderItemStatus status, Product product, Order order)
+        public OrderItem(int quantity, OrderItemStatusEnum status, Product product, Order order)
         {
             Quantity = quantity;
             Status = status;
@@ -20,14 +20,14 @@ namespace Restaurant.Core.Entities
 
         public int Quantity { get; set; }
 
-        public OrderItemStatus Status{ get; set; }
+        public OrderItemStatusEnum Status{ get; set; }
 
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
         [JsonIgnore]
         public int ProductId { get; set; }
 
         [JsonIgnore]
-        public Order Order { get; set; }
+        public virtual Order Order { get; set; }
         [JsonIgnore]
         public int OrderId { get; set; }
 

@@ -1,11 +1,12 @@
 ﻿using Restaurant.Core.Entities.Base;
 using Restaurant.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
     public class Table : Entity
     {
-        public Table(string name, TableStatus status, IEnumerable<Order> orders)
+        public Table(string name, TableStatusEnum status, IEnumerable<Order> orders)
         {
             Name = name;
             Status = status;
@@ -17,8 +18,9 @@ namespace Restaurant.Core.Entities
         }
 
         public string Name { get; set; }
-        public TableStatus Status { get; set; }
-        public IEnumerable<Order> Orders { get; set; }
+        public TableStatusEnum Status { get; set; }
+        [JsonIgnore]
+        public virtual IEnumerable<Order> Orders { get; set; }
 
     }
 }

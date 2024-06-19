@@ -7,9 +7,9 @@ namespace Restaurant.Application.Queries.TableQueries.GetAllTables
 {
     public class GetAllTablesQuery : IRequest<List<TableViewModel>>
     {
-        public TableStatus? TableStatus { get; set; }
+        public TableStatusEnum? TableStatus { get; set; }
 
-        public GetAllTablesQuery(TableStatus? tableStatus)
+        public GetAllTablesQuery(TableStatusEnum? tableStatus)
         {
             TableStatus = tableStatus;
         }

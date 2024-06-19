@@ -29,20 +29,20 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
             // TODO: implementar lógica de autorização
             var entity = _mapper.Map<CommonOrder>(request);
             decimal valueTotal = 0; 
-            entity.Status = Core.Enums.OrderStatus.CREATED;
+            entity.Status = Core.Enums.OrderStatusEnum.CREATED;
             entity.EmployeeId = request.EmployeeId;
             entity.Type = "Common";
 
             entity.Items.ToList().ForEach(async i =>
             {
-                i.Status = Core.Enums.OrderItemStatus.PENDING;
+                i.Status = Core.Enums.OrderItemStatusEnum.PENDING;
                 i.CreatedAt = DateTime.Now;
                 var product = await _productRepository.GetByIdAsync(i.ProductId);
                 valueTotal += product.Price * i.Quantity;
             });
             entity.ValueTotal = valueTotal;
 
-            await _tableRepository.UpdateStatusAsync(entity.TableId, Core.Enums.TableStatus.BUSY);
+            await _tableRepository.UpdateStatusAsync(entity.TableId, Core.Enums.TableStatusEnum.BUSY);
             var result = await _orderRepository.AddAsync(entity);
             return result.Id;
         }

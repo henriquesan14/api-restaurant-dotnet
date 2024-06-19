@@ -53,7 +53,7 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] int? status, [FromQuery] DateTime? date, [FromQuery] OrderType orderType = OrderType.COMMON)
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] int? status, [FromQuery] DateTime? date, [FromQuery] OrderTypeEnum orderType = OrderTypeEnum.COMMON)
         {
             var query = new GetAllOrdersQuery(pageFilter, orderType, status, date);
             var order = await _mediator.Send(query);
@@ -61,7 +61,7 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id, [FromQuery] OrderType orderType = OrderType.COMMON)
+        public async Task<IActionResult> GetById(int id, [FromQuery] OrderTypeEnum orderType = OrderTypeEnum.COMMON)
         {
             var query = new GetOrderQuery(id, orderType);
             var order = await _mediator.Send(query);

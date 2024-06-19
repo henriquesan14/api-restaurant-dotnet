@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Core.Enums
 {
-    public enum PaymentMethod
+    public enum PaymentMethodEnum
     {
         CASH,
         CARD

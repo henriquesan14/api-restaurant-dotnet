@@ -1,12 +1,16 @@
 ﻿using Restaurant.Core.Entities.Base;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
     public  class User : Entity
     {
-        public User(string firstName, string lastName, string document, string email, string phoneNumber, string password, IEnumerable<UserRole> roles, IEnumerable<Address> addresses, IEnumerable<Order> orders)
+        public User()
+        {
+        }
+
+        public User(string firstName, string lastName, string document, string email, string phoneNumber, string password, Role role,
+            int roleId, IEnumerable<Address> addresses, IEnumerable<Order> orders)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -14,13 +18,10 @@ namespace Restaurant.Core.Entities
             Email = email;
             PhoneNumber = phoneNumber;
             Password = password;
-            Roles = roles;
+            Role = role;
+            RoleId = roleId;
             Addresses = addresses;
             Orders = orders;
-        }
-
-        public User()
-        {
         }
 
         public string FirstName { get; set; }
@@ -33,9 +34,10 @@ namespace Restaurant.Core.Entities
         public string PhoneNumber { get; set; }
         [JsonIgnore]
         public string Password { get; set; }
-        public IEnumerable<UserRole> Roles { get; set; }
-        public IEnumerable<Address> Addresses { get; set; }
+        public virtual Role Role { get; set; }
+        public int RoleId { get; set; }
+        public virtual IEnumerable<Address> Addresses { get; set; }
         [JsonIgnore]
-        public IEnumerable<Order> Orders { get; set; }
+        public virtual IEnumerable<Order> Orders { get; set; }
     }
 }

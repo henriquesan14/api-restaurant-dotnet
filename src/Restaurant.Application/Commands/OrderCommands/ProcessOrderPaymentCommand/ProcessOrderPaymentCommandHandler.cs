@@ -24,7 +24,7 @@ namespace Restaurant.Application.Commands.OrderCommands.UpdateOrderStatusCommand
             Order order = await _orderRepository.GetOrderById(request.OrderId) ;
             if (order != null)
             {
-                order.Status = Core.Enums.OrderStatus.PENDING;
+                order.Status = Core.Enums.OrderStatusEnum.PENDING;
                 var dto = new PaymentInfoDTO(request.OrderId, request.CreditCardNumber, request.Cvv, request.ExpiresAt, request.FullName, request.Amount) ;
                 _paymentService.ProcessPayment(dto);
                 await _orderRepository.UpdateAsync(order);

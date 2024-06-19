@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Core.Enums
 {
-    public enum OrderType
+    public enum OrderTypeEnum
     {
         COMMON,
         DELIVERY

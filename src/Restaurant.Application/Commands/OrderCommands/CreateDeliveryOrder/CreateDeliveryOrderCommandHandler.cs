@@ -27,12 +27,12 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
             // TODO: implementar lógica de autorização
             var entity = _mapper.Map<DeliveryOrder>(request);
             decimal valueTotal = 0;
-            entity.Status = Core.Enums.OrderStatus.CREATED;
+            entity.Status = Core.Enums.OrderStatusEnum.CREATED;
             entity.Type = "Delivery";
             entity.ValueTotal = entity.Items.Sum(i => i.SubTotal);
             entity.Items.ToList().ForEach(async i =>
             {
-                i.Status = Core.Enums.OrderItemStatus.PENDING;
+                i.Status = Core.Enums.OrderItemStatusEnum.PENDING;
                 i.CreatedAt = DateTime.Now;
                 var product = await _productRepository.GetByIdAsync(i.ProductId);
                 valueTotal += product.Price * i.Quantity;

@@ -8,7 +8,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
 {
     public class GetAllOrdersQuery : IRequest<PagedListViewModel<OrderViewModel>>
     {
-        public GetAllOrdersQuery(PageFilter pageFilter, OrderType orderType, int? status, DateTime? date)
+        public GetAllOrdersQuery(PageFilter pageFilter, OrderTypeEnum orderType, int? status, DateTime? date)
         {
             PageFilter = pageFilter;
             OrderType = orderType;
@@ -17,7 +17,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
         }
 
         public PageFilter PageFilter { get; set; }
-        public OrderType OrderType { get; set; }
+        public OrderTypeEnum OrderType { get; set; }
         public int? Status { get; set; }
         public DateTime? Date { get; set; }
     }

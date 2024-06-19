@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Restaurant.Core.Entities.Base
+﻿namespace Restaurant.Core.Entities.Base
 {
 
     public abstract class BaseEntity<TId> : IBaseEntity<TId>
@@ -9,7 +7,11 @@ namespace Restaurant.Core.Entities.Base
 
         public DateTime? CreatedAt { get; set; }
 
+        public int CreatedById { get; set; }
+
         public DateTime? UpdatedAt { get; set; }
+
+        public int? UpdatedById { get; set; }
 
         int? _requestedHashCode;
 

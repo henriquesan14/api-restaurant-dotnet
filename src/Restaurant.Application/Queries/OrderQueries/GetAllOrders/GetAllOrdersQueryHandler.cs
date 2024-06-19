@@ -26,7 +26,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
         public async Task<PagedListViewModel<OrderViewModel>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
             IReadOnlyCollection<Order> orders;
-            if (request.OrderType == OrderType.COMMON)
+            if (request.OrderType == OrderTypeEnum.COMMON)
             {
                 orders = await _orderRepository.GetAllCommonOrdersAsync(request.PageFilter.PageSize, request.PageFilter.PageNumber, request.Status, request.Date);
             }

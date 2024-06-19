@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Core.Enums
 {
-    public enum CategoryType
+    public enum CategoryTypeEnum
     {
         BEBIDA,
         REFEICAO,

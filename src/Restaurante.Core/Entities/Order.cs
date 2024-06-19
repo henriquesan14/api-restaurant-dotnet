@@ -5,22 +5,25 @@ namespace Restaurant.Core.Entities
 {
     public class Order : Entity
     {
-        public Order(OrderStatus status, User client, IEnumerable<OrderItem> items)
-        {
-            Status = status;
-            Client = client;
-            Items = items;
-        }
-
         public Order()
         {
         }
 
+        public Order(string type, OrderStatusEnum status, User client, int? clientId, IEnumerable<OrderItem> items, decimal valueTotal)
+        {
+            Type = type;
+            Status = status;
+            Client = client;
+            ClientId = clientId;
+            Items = items;
+            ValueTotal = valueTotal;
+        }
+
         public string Type { get; set; }
-        public OrderStatus Status { get; set; }
-        public User Client { get; set; }
-        public int ClientId { get; set; }
-        public IEnumerable<OrderItem> Items { get; set; }
+        public OrderStatusEnum Status { get; set; }
+        public virtual User Client { get; set; }
+        public int? ClientId { get; set; }
+        public virtual IEnumerable<OrderItem> Items { get; set; }
         public decimal ValueTotal { get; set; }
     }
 }

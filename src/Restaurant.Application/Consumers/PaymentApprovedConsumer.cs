@@ -70,7 +70,7 @@ namespace Restaurant.Application.Consumers
 
                 var order = await orderRepository.GetOrderById(orderId);
 
-                order.Status = Core.Enums.OrderStatus.FINISHED;
+                order.Status = Core.Enums.OrderStatusEnum.FINISHED;
 
                 await orderRepository.UpdateAsync(order);
             }

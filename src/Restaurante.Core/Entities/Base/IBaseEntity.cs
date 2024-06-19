@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Restaurant.Core.Entities.Base
+﻿namespace Restaurant.Core.Entities.Base
 {
     public interface IBaseEntity<TId>
     {

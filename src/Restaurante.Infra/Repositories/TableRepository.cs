@@ -16,7 +16,7 @@ namespace Restaurant.Infra.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<Table>> GetAllTables(TableStatus? status)
+        public async Task<IReadOnlyCollection<Table>> GetAllTables(TableStatusEnum? status)
         {
             var result = await _context.Set<Table>()
                 .AsNoTracking()
@@ -25,7 +25,7 @@ namespace Restaurant.Infra.Repositories
             return result;
         }
 
-        public async Task UpdateStatusAsync(int id, TableStatus status)
+        public async Task UpdateStatusAsync(int id, TableStatusEnum status)
         {
             var table = await _context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
             table.Status = status;

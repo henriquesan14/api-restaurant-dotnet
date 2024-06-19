@@ -6,6 +6,6 @@ namespace Restaurant.Application.ViewModels
     {
         public int Id;
         public string Name { get; set; }
-        public TableStatus Status { get; set; }
+        public TableStatusEnum Status { get; set; }
     }
 }

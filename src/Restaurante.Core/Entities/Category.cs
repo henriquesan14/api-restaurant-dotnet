@@ -1,13 +1,12 @@
 ﻿using Restaurant.Core.Entities.Base;
 using Restaurant.Core.Enums;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
     public class Category : Entity
     {
-        public Category(string name, CategoryType categoryType, IEnumerable<Product> products)
+        public Category(string name, CategoryTypeEnum categoryType, IEnumerable<Product> products)
         {
             Name = name;
             CategoryType = categoryType;
@@ -20,9 +19,9 @@ namespace Restaurant.Core.Entities
 
         public string Name { get; set; }
 
-        public CategoryType CategoryType { get; set; }
+        public CategoryTypeEnum CategoryType { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Product> Products { get; set; }
+        public virtual IEnumerable<Product> Products { get; set; }
     }
 }

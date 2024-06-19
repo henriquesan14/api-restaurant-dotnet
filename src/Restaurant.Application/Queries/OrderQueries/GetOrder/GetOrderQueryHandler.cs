@@ -22,7 +22,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetOrder
         public async Task<OrderViewModel> Handle(GetOrderQuery request, CancellationToken cancellationToken)
         {
             Order order;
-            if (request.OrderType == Core.Enums.OrderType.COMMON)
+            if (request.OrderType == Core.Enums.OrderTypeEnum.COMMON)
             {
                 order = await _orderRepository.GetCommonOrderByIdAsync(request.Id);
                 return _mapper.Map<OrderViewModel>(order);

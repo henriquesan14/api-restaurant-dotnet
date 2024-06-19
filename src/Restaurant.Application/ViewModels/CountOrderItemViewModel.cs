@@ -7,6 +7,6 @@ namespace Restaurant.Application.ViewModels
     {
         public DateTime? Date { get; set; }
         public int Count { get; set; }
-        public OrderItemStatus? Status { get; set; }
+        public OrderItemStatusEnum? Status { get; set; }
     }
 }

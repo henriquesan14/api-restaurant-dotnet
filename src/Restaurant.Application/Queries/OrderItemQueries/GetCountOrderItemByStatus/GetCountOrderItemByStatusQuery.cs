@@ -6,11 +6,11 @@ namespace Restaurant.Application.Queries.OrderItemQueries.GetCountOrderItemBySta
 {
     public class GetCountOrderItemByStatusQuery : IRequest<CountOrderItemViewModel>
     {
-        public GetCountOrderItemByStatusQuery(OrderItemStatus status)
+        public GetCountOrderItemByStatusQuery(OrderItemStatusEnum status)
         {
             Status = status;
         }
 
-        public OrderItemStatus Status { get; set; }
+        public OrderItemStatusEnum Status { get; set; }
     }
 }

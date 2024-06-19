@@ -40,7 +40,7 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet("countByStatus")]
-        public async Task<IActionResult> GetCountOrderItemByStatus([FromQuery] OrderItemStatus status)
+        public async Task<IActionResult> GetCountOrderItemByStatus([FromQuery] OrderItemStatusEnum status)
         {
             var result = await _mediator.Send(new GetCountOrderItemByStatusQuery(status));
             return Ok(result);

@@ -7,11 +7,11 @@ namespace Restaurant.Application.Queries.CategoryQueries.GetByCategoryType
 {
     public class GetAllCategoriesQuery : IRequest<PagedListViewModel<CategoryViewModel>>
     {
-        public CategoryType? CategoryType { get; set; }
+        public CategoryTypeEnum? CategoryType { get; set; }
         public string Name { get; set; }
         public PageFilter PageFilter { get; set; }
 
-        public GetAllCategoriesQuery(PageFilter pageFilter, CategoryType? categoryType, string name)
+        public GetAllCategoriesQuery(PageFilter pageFilter, CategoryTypeEnum? categoryType, string name)
         {
             PageFilter = pageFilter;
             CategoryType = categoryType;
