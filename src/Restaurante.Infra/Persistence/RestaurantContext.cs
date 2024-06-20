@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Restaurant.Core.Entities;
+using Restaurant.Infra.Mappings;
 using System.Reflection;
 
 namespace Restaurant.Infra.Persistence
@@ -23,27 +24,17 @@ namespace Restaurant.Infra.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.Items)
-                .WithOne(o => o.Order)
-                .HasForeignKey(o => o.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Address>()
-                .HasMany(o => o.Orders)
-                .WithOne(o => o.Address)
-                .HasForeignKey(o => o.AddressId)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<User>()
-                .HasMany(o => o.Orders)
-                .WithOne(o => o.Client)
-                .HasForeignKey(o => o.ClientId)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<User>()
-                .HasMany(o => o.Addresses)
-                .WithOne(o => o.User)
-                .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfiguration(new AddressMapping());
+            modelBuilder.ApplyConfiguration(new CategoryMapping());
+            modelBuilder.ApplyConfiguration(new CityMapping());
+            modelBuilder.ApplyConfiguration(new OrderMapping());
+            modelBuilder.ApplyConfiguration(new CommonOrderMapping());
+            modelBuilder.ApplyConfiguration(new DeliveryOrderMapping());
+            modelBuilder.ApplyConfiguration(new OrderItemMapping());
+            modelBuilder.ApplyConfiguration(new ProductMapping());
+            modelBuilder.ApplyConfiguration(new RoleMapping());
+            modelBuilder.ApplyConfiguration(new StateMapping());
+            modelBuilder.ApplyConfiguration(new UserMapping());
         }
 
     }

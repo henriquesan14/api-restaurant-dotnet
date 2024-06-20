@@ -6,21 +6,23 @@ namespace Restaurant.Core.Entities
 {
     public class Table : Entity
     {
-        public Table(string name, TableStatusEnum status, IEnumerable<Order> orders)
+        
+
+        public Table()
+        {
+        }
+
+        public Table(string name, TableStatusEnum status, IEnumerable<CommonOrder> orders)
         {
             Name = name;
             Status = status;
             Orders = orders;
         }
 
-        public Table()
-        {
-        }
-
         public string Name { get; set; }
         public TableStatusEnum Status { get; set; }
         [JsonIgnore]
-        public virtual IEnumerable<Order> Orders { get; set; }
+        public virtual IEnumerable<CommonOrder> Orders { get; set; }
 
     }
 }

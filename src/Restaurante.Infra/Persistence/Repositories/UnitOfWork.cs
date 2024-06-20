@@ -17,10 +17,9 @@ namespace Restaurant.Infra.Persistence.Repositories
         public ITableRepository Tables { get; }
         public IUserRepository Users { get; }
 
-        public UnitOfWork(IDbContextTransaction transaction, RestaurantContext dbContext, IAddressRepository addresses, ICategoryRepository categories,
+        public UnitOfWork(RestaurantContext dbContext, IAddressRepository addresses, ICategoryRepository categories,
             IOrderItemRepository orderItems, IOrderRepository orders, IProductRepository products, ITableRepository tables, IUserRepository users)
         {
-            _transaction = transaction;
             _dbContext = dbContext;
             Addresses = addresses;
             Categories = categories;
