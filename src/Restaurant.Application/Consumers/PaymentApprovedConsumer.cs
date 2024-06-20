@@ -5,11 +5,8 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Restaurant.Application.IntegrationEvents;
 using Restaurant.Core.Repositories;
-using System;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Consumers
 {
@@ -66,13 +63,14 @@ namespace Restaurant.Application.Consumers
         {
             using( var scope = _serviceProvider.CreateScope())
             {
-                var orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
+                var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-                var order = await orderRepository.GetOrderById(orderId);
+                var order = await unitOfWork.Orders.GetOrderById(orderId);
 
                 order.Status = Core.Enums.OrderStatusEnum.FINISHED;
 
-                await orderRepository.UpdateAsync(order);
+                unitOfWork.Orders.UpdateAsync(order);
+                await unitOfWork.CompleteAsync();
             }
         }
     }

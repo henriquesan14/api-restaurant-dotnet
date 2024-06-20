@@ -1,21 +1,23 @@
 ﻿using MediatR;
-using Restaurant.Application.ViewModels.Page;
 using Restaurant.Application.ViewModels;
-using System;
+using Restaurant.Application.ViewModels.Page;
 
 namespace Restaurant.Application.Queries.OrderItemQueries.GetAllOrdemItem
 {
     public class GetAllOrdemItemQuery : IRequest<PagedListViewModel<OrderItemViewModel>>
     {
-        public GetAllOrdemItemQuery(PageFilter pageFilter, int? status, DateTime? date)
+        public GetAllOrdemItemQuery(int? status, DateTime? date, int pageNumber, int pageSize)
         {
-            PageFilter = pageFilter;
             Status = status;
             Date = date;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
         }
 
-        public PageFilter PageFilter { get; set; }
         public int? Status { get; set; }
         public DateTime? Date { get; set; }
+
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
     }
 }

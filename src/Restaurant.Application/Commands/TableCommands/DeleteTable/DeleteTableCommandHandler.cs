@@ -1,27 +1,26 @@
 ﻿using MediatR;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.TableCommands.DeleteTable
 {
     public class DeleteTableCommandHandler : IRequestHandler<DeleteTableCommand, int>
     {
-        private readonly ITableRepository _tableRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteTableCommandHandler(ITableRepository tableRepository)
+        public DeleteTableCommandHandler(IUnitOfWork unitOfWork)
         {
-            _tableRepository = tableRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<int> Handle(DeleteTableCommand request, CancellationToken cancellationToken)
         {
-            var table = await _tableRepository.GetByIdAsync(request.Id);
+            var table = await _unitOfWork.Tables.GetByIdAsync(request.Id);
             if(table == null)
             {
                 return 0;
             }
-            await _tableRepository.DeleteAsync(table);
+            _unitOfWork.Tables.DeleteAsync(table);
+            await _unitOfWork.CompleteAsync();
             return table.Id;
         }
     }

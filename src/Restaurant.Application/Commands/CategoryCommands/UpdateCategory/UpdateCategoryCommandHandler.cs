@@ -1,31 +1,30 @@
 ﻿using AutoMapper;
 using MediatR;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.CategoryCommands.UpdateCategory
 {
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, int>
     {
-        public readonly ICategoryRepository _categoryRepository;
+        public readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper)
+        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<int> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _categoryRepository.GetByIdAsync(request.Id);
+            var category = await _unitOfWork.Categories.GetByIdAsync(request.Id);
             if(category == null)
             {
                 return 0;
             }
             var categoryEntity = _mapper.Map(request, category);
-            await _categoryRepository.UpdateAsync(categoryEntity);
+            _unitOfWork.Categories.UpdateAsync(categoryEntity);
+            await _unitOfWork.CompleteAsync();
             return categoryEntity.Id;
         }
     }

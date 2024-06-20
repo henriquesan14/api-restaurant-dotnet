@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using Restaurant.Infra.Repositories.Base;
-using System.Threading.Tasks;
+using Restaurant.Infra.Persistence.Repositories.Base;
 
-namespace Restaurant.Infra.Repositories
+namespace Restaurant.Infra.Persistence.Repositories
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
@@ -14,11 +13,7 @@ namespace Restaurant.Infra.Repositories
 
         public async Task<User> GetByEmail(string email)
         {
-            return await _context.Users
-                .AsNoTracking()
-                .Include(u => u.Roles)
-                .ThenInclude(r => r.Role)
-                .FirstOrDefaultAsync(u => u.Email == email);
+            return await DbContext.Set<User>().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }

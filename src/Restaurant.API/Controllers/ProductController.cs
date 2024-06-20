@@ -24,9 +24,8 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter)
+        public async Task<IActionResult> GetAll([FromQuery] GetAllProductsQuery query)
         {
-            var query = new GetAllProductsQuery(pageFilter);
             var products = await _mediator.Send(query);
             return Ok(products);
         }

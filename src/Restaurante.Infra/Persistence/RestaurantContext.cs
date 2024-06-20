@@ -2,7 +2,7 @@
 using Restaurant.Core.Entities;
 using System.Reflection;
 
-namespace Restaurant.Infra
+namespace Restaurant.Infra.Persistence
 {
     public class RestaurantContext : DbContext
     {

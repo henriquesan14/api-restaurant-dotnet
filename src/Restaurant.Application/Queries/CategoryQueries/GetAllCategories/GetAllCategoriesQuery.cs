@@ -7,15 +7,18 @@ namespace Restaurant.Application.Queries.CategoryQueries.GetByCategoryType
 {
     public class GetAllCategoriesQuery : IRequest<PagedListViewModel<CategoryViewModel>>
     {
-        public CategoryTypeEnum? CategoryType { get; set; }
-        public string Name { get; set; }
-        public PageFilter PageFilter { get; set; }
-
-        public GetAllCategoriesQuery(PageFilter pageFilter, CategoryTypeEnum? categoryType, string name)
+        public GetAllCategoriesQuery(CategoryTypeEnum? categoryType, string name, int pageNumber, int pageSize)
         {
-            PageFilter = pageFilter;
             CategoryType = categoryType;
             Name = name;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
         }
+
+        public CategoryTypeEnum? CategoryType { get; set; }
+        public string? Name { get; set; }
+
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
     }
 }

@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using Restaurant.Infra.Repositories.Base;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Restaurant.Infra.Persistence.Repositories.Base;
 
-namespace Restaurant.Infra.Repositories
+namespace Restaurant.Infra.Persistence.Repositories
 {
     public class AddressRepository : BaseRepository<Address>, IAddressRepository
     {
@@ -16,7 +13,7 @@ namespace Restaurant.Infra.Repositories
 
         public async Task<IReadOnlyCollection<Address>> GetAddressByUser(long userId)
         {
-            var result = await _context.Set<Address>()
+            var result = await DbContext.Set<Address>()
                 .AsNoTracking()
                 .Where(a => a.UserId == userId)
                 .ToListAsync();

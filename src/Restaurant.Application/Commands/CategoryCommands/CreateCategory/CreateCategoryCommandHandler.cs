@@ -2,8 +2,6 @@
 using MediatR;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.CategoryCommands.CreateCategory
 {

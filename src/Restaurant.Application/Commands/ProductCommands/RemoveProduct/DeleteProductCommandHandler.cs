@@ -1,27 +1,26 @@
 ﻿using MediatR;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.ProductCommands.RemoveProduct
 {
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, int>
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteProductCommandHandler(IProductRepository repository)
+        public DeleteProductCommandHandler(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<int> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _repository.GetByIdAsync(request.Id);
+            var product = await _unitOfWork.Products.GetByIdAsync(request.Id);
             if(product == null)
             {
                 return 0;
             }
-            await _repository.DeleteAsync(product);
+            _unitOfWork.Products.DeleteAsync(product);
+            await _unitOfWork.CompleteAsync();
             return product.Id;
         }
     }

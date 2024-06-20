@@ -31,4 +31,9 @@
     <ProjectReference Include="..\Restaurante.Core\Restaurant.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="Mappings\" />
+  </ItemGroup>
+
 </Project>

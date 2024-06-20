@@ -5,10 +5,7 @@ using Restaurant.Application.Commands.OrderCommands.UpdateOrderItemCommand;
 using Restaurant.Application.Queries.OrderItemQueries.GetAllOrdemItem;
 using Restaurant.Application.Queries.OrderItemQueries.GetCountOrderItemByStatus;
 using Restaurant.Application.Queries.OrderItemQueries.GetCountOrderItemToday;
-using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
-using System;
-using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
 {
@@ -25,9 +22,8 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrderItems([FromQuery] PageFilter pageFilter, [FromQuery] int? status, [FromQuery] DateTime? date)
+        public async Task<IActionResult> GetAllOrderItems([FromQuery] GetAllOrdemItemQuery query, [FromQuery] DateTime? date)
         {
-            var query = new GetAllOrdemItemQuery(pageFilter, status, date);
             var result = await _mediator.Send(query);
             return Ok(result);
         }

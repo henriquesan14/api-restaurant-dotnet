@@ -1,31 +1,30 @@
 ﻿using AutoMapper;
 using MediatR;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.TableCommands.UpdateTable
 {
     public class UpdateTableCommandHandler : IRequestHandler<UpdateTableCommand, int>
     {
-        private readonly ITableRepository _tableRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateTableCommandHandler(ITableRepository tableRepository, IMapper mapper)
+        public UpdateTableCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _tableRepository = tableRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<int> Handle(UpdateTableCommand request, CancellationToken cancellationToken)
         {
-            var table = await _tableRepository.GetByIdAsync(request.Id);
+            var table = await _unitOfWork.Tables.GetByIdAsync(request.Id);
             if (table == null)
             {
                 return 0;
             }
             var tableEntity = _mapper.Map(request, table);
-            await _tableRepository.UpdateAsync(tableEntity);
+            _unitOfWork.Tables.UpdateAsync(tableEntity);
+            await _unitOfWork.CompleteAsync();
             return tableEntity.Id;
         }
     }

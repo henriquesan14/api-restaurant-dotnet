@@ -5,7 +5,7 @@ using Restaurant.API.Extensions;
 using Restaurant.API.Filters;
 using Restaurant.Application.Consumers;
 using Restaurant.Application.Validators;
-using Restaurant.Infra;
+using Restaurant.Infra.Persistence;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Application.Services;
+﻿using Restaurant.Application.Services;
 using Restaurant.Core.Repositories;
 using Restaurant.Core.Repositories.Base;
 using Restaurant.Core.Services;
 using Restaurant.Infra.MessageBus;
-using Restaurant.Infra.Repositories;
-using Restaurant.Infra.Repositories.Base;
+using Restaurant.Infra.Persistence.Repositories;
+using Restaurant.Infra.Persistence.Repositories.Base;
 
 namespace Restaurant.API.Extensions
 {
@@ -23,6 +22,7 @@ namespace Restaurant.API.Extensions
             services.AddTransient<ITableRepository, TableRepository>();
             services.AddTransient<IOrderItemRepository, OrderItemRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();

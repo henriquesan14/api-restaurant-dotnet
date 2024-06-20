@@ -1,23 +1,35 @@
 ﻿using Restaurant.Core.Entities.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Restaurant.Core.Repositories.Base
 {
-    public interface IBaseRepository<TEntity> : IDisposable where TEntity : Entity
+    public interface IBaseRepository<T> where T : Entity
     {
-        Task<IReadOnlyList<TEntity>> GetAllAsync();
-        Task<IReadOnlyList<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<IReadOnlyList<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate = null,
-                                        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-                                        string includeString = null,
-                                        bool disableTracking = true);
-        Task<TEntity> GetByIdAsync(int id);
-        Task<TEntity> AddAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(TEntity entity);
+        Task<IReadOnlyList<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, bool disableTracking = true);
+
+        Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate);
+
+        Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null,
+          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+          string includeString = null,
+          bool disableTracking = true);
+
+        Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null,
+          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+          List<Expression<Func<T, object>>> includes = null,
+          bool disableTracking = true,
+          int? pageNumber = null, int? pageSize = 20);
+
+        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(int id, List<Expression<Func<T, object>>> includes = null);
+
+        Task<T> AddAsync(T entity);
+
+        Task AddRangeAsync(List<T> entity);
+
+        void UpdateAsync(T entity);
+
+        void DeleteAsync(T entity);
+        Task<int> GetCountAsync(Expression<Func<T, bool>> predicate = null);
     }
 }

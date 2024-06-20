@@ -6,11 +6,13 @@ namespace Restaurant.Application.Queries.ProductQueries.GetAllProducts
 {
     public  class GetAllProductsQuery : IRequest<PagedListViewModel<ProductViewModel>>
     {
-        public GetAllProductsQuery(PageFilter pageFilter)
+        public GetAllProductsQuery(int pageNumber, int pageSize)
         {
-            PageFilter = pageFilter;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
         }
 
-        public PageFilter PageFilter { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
     }
 }

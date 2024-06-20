@@ -2,26 +2,18 @@
 using MediatR;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
 {
     public class CreateCommonOrderCommandHandler : IRequestHandler<CreateCommonOrderCommand, int>
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly ITableRepository _tableRepository;
-        private readonly IProductRepository _productRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateCommonOrderCommandHandler(IOrderRepository orderRepository, ITableRepository tableRepository, IMapper mapper, IProductRepository productRepository)
+        public CreateCommonOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _orderRepository = orderRepository;
-            _tableRepository = tableRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _productRepository = productRepository;
         }
 
         public async Task<int> Handle(CreateCommonOrderCommand request, CancellationToken cancellationToken)
@@ -33,17 +25,29 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
             entity.EmployeeId = request.EmployeeId;
             entity.Type = "Common";
 
-            entity.Items.ToList().ForEach(async i =>
+            await _unitOfWork.BeginTransaction();
+
+            var products = new List<Product>();
+            foreach (var item in entity.Items)
             {
-                i.Status = Core.Enums.OrderItemStatusEnum.PENDING;
-                i.CreatedAt = DateTime.Now;
-                var product = await _productRepository.GetByIdAsync(i.ProductId);
-                valueTotal += product.Price * i.Quantity;
-            });
+                item.Status = Core.Enums.OrderItemStatusEnum.PENDING;
+                item.CreatedAt = DateTime.Now;
+                var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId);
+                products.Add(product);
+                valueTotal += product.Price * item.Quantity;
+            }
+            
             entity.ValueTotal = valueTotal;
 
-            await _tableRepository.UpdateStatusAsync(entity.TableId, Core.Enums.TableStatusEnum.BUSY);
-            var result = await _orderRepository.AddAsync(entity);
+            var table = await _unitOfWork.Tables.GetByIdAsync(entity.TableId.Value);
+            table.Status = Core.Enums.TableStatusEnum.BUSY;
+            _unitOfWork.Tables.UpdateAsync(table);
+            await _unitOfWork.CompleteAsync();
+
+            var result = await _unitOfWork.Orders.AddAsync(entity);
+            await _unitOfWork.CompleteAsync();
+
+            await _unitOfWork.CommitAsync();
             return result.Id;
         }
     }

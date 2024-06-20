@@ -33,9 +33,8 @@ namespace Restaurant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] CategoryTypeEnum? categoryType, [FromQuery] string name)
+        public async Task<IActionResult> GetAll([FromQuery] GetAllCategoriesQuery query)
         {
-            var query = new GetAllCategoriesQuery(pageFilter, categoryType, name);
             var result = await _mediator.Send(query);
             return Ok(result);
         }

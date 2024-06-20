@@ -22,5 +22,7 @@ namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
         public string District { get; set; }
         public string ZipCode { get; set; }
 
+        public int RoleId { get; set; }
+
     }
 }

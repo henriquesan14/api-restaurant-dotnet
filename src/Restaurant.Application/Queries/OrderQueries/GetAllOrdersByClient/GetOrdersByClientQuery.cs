@@ -6,13 +6,15 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrdersByClient
 {
     public class GetOrdersByClientQuery : IRequest<PagedListViewModel<OrderViewModel>>
     {
-        public GetOrdersByClientQuery(PageFilter pageFilter, int clientId)
+        public GetOrdersByClientQuery(int pageNumber, int pageSize, int clientId)
         {
-            PageFilter = pageFilter;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
             ClientId = clientId;
         }
 
-        public PageFilter PageFilter { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
         public int ClientId { get; set; }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Restaurant.Application.ViewModels.Page
+﻿namespace Restaurant.Application.ViewModels.Page
 {
     public class PagedListViewModel<T>
     {
