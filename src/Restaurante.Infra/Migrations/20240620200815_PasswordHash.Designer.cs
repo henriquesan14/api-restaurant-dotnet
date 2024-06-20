@@ -12,8 +12,8 @@ using Restaurant.Infra.Persistence;
 namespace Restaurant.Infra.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20240620195350_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240620200815_PasswordHash")]
+    partial class PasswordHash
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -420,8 +420,8 @@ namespace Restaurant.Infra.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

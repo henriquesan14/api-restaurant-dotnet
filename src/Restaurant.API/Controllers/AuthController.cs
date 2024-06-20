@@ -33,13 +33,6 @@ namespace Restaurant.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
             var result = await _mediator.Send(command);
-            if(result == 0)
-            {
-                return BadRequest(new
-                {
-                    Message = "Já existe um usuário com este email"
-                });
-            }
             return Ok(result);
         }
     }

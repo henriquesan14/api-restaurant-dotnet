@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.UserCommands.CreateUserCommand;
-using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
 {

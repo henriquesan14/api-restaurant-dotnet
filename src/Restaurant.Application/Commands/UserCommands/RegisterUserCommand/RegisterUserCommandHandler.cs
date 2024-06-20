@@ -8,18 +8,18 @@ namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, int>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public RegisterUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+        public RegisterUserCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<int> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            User userExist = await _userRepository.GetByEmail(request.Email);
+            User userExist = await _unitOfWork.Users.GetByEmail(request.Email);
             if (userExist != null)
             {
                 throw new UserAlreadyExistsException("Já possui um usuário com este email");
@@ -28,18 +28,26 @@ namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
                 new Address
                 {
                     Street = request.Street,
-                        Number = request.Number,
+                    Number = request.Number,
                     District = request.District,
                     ZipCode = request.ZipCode,
-                    CreatedAt = DateTime.Now
+                    Complement = request.Complement,
+                    CityId = request.CityId
                 }
             };
             
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
             var user = _mapper.Map<User>(request);
             user.Addresses = addresses;
-            var userCreated = await _userRepository.AddAsync(user);
-            return userCreated.Id;
+            var userCreated = await _unitOfWork.Users.AddAsync(user);
+            try
+            {
+                await _unitOfWork.CompleteAsync();
+            }catch(Exception e)
+            {
+
+            }
+                return userCreated.Id;
         }
     }
 }

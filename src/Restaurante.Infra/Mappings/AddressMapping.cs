@@ -23,7 +23,6 @@ namespace Restaurant.Infra.Mappings
                     .IsRequired()
                     .HasMaxLength(8);
             builder.Property(d => d.Complement)
-                    .IsRequired()
                     .HasMaxLength(300);
 
             builder.HasOne(d => d.City)

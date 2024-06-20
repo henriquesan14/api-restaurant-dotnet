@@ -29,7 +29,7 @@ namespace Restaurant.Infra.Mappings
                     .HasMaxLength(11);
             builder.Property(d => d.Password)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(200);
 
             builder.HasOne(d => d.Role)
                 .WithMany(p => p.Users)
