@@ -7,19 +7,20 @@ namespace Restaurant.Application.Commands.CategoryCommands.CreateCategory
 {
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
     {
-        private readonly ICategoryRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateCategoryCommandHandler(ICategoryRepository repository, IMapper mapper)
+        public CreateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = _mapper.Map<Category>(request);
-            await _repository.AddAsync(category);
+            await _unitOfWork.Categories.AddAsync(category);
+            await _unitOfWork.CompleteAsync();
             return category.Id;
         }
     }

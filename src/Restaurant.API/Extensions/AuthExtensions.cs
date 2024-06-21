@@ -28,8 +28,8 @@ namespace Restaurant.API.Extensions
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("User", policy => policy.RequireClaim("Role", "User"));
                 options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
+                options.AddPolicy("User", policy => policy.RequireClaim("Role", "User"));
             });
 
             return services;

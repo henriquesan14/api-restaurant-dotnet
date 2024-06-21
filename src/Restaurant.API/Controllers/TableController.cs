@@ -30,7 +30,7 @@ namespace Restaurant.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTableCommand command)
         {
@@ -38,7 +38,7 @@ namespace Restaurant.API.Controllers
             return Ok(id);
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTableCommand command)
         {
@@ -50,7 +50,7 @@ namespace Restaurant.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

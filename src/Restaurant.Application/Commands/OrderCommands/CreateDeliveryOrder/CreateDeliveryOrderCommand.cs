@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using System.Collections.Generic;
+using Restaurant.Application.InputModels;
 
 namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
 {
     public class CreateDeliveryOrderCommand : IRequest<int>
     {
-        public IEnumerable<OrderItemCommand> Items { get; set; }
+        public IEnumerable<OrderItemInputModel> Items { get; set; }
 
         public int ClientId { get; set; }
 

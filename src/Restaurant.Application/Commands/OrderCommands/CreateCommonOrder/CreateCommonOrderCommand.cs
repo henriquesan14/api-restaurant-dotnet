@@ -1,12 +1,19 @@
 ﻿using MediatR;
-using System.Collections.Generic;
+using Restaurant.Application.InputModels;
 using System.Text.Json.Serialization;
 
 namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
 {
     public class CreateCommonOrderCommand : IRequest<int>
     {
-        public CreateCommonOrderCommand(IEnumerable<OrderItemCommand> items, int tableId, int clientId, int employeeId)
+        
+
+        public CreateCommonOrderCommand()
+        {
+            
+        }
+
+        public CreateCommonOrderCommand(IEnumerable<OrderItemInputModel> items, int tableId, int clientId, int employeeId)
         {
             Items = items;
             TableId = tableId;
@@ -14,12 +21,7 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
             EmployeeId = employeeId;
         }
 
-        public CreateCommonOrderCommand()
-        {
-            
-        }
-
-        public IEnumerable<OrderItemCommand> Items { get; set; }
+        public IEnumerable<OrderItemInputModel> Items { get; set; }
 
         public int TableId { get; set; }
         public int ClientId { get; set; }

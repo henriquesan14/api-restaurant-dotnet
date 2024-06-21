@@ -28,7 +28,7 @@ namespace Restaurant.Application.Services
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.FirstName.ToString()),
                     new Claim(ClaimTypes.Email, user.Email.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()!)
+                    new Claim(ClaimTypes.Role, user.Role.Name.ToString()!)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

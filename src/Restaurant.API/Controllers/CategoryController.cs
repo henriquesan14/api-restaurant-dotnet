@@ -5,9 +5,6 @@ using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
 using Restaurant.Application.Commands.CategoryCommands.DeleteCategory;
 using Restaurant.Application.Commands.CategoryCommands.UpdateCategory;
 using Restaurant.Application.Queries.CategoryQueries.GetByCategoryType;
-using Restaurant.Application.ViewModels.Page;
-using Restaurant.Core.Enums;
-using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
 {
@@ -23,7 +20,7 @@ namespace Restaurant.API.Controllers
             _mediator = mediator;
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
         {
@@ -39,7 +36,7 @@ namespace Restaurant.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
         {
@@ -51,7 +48,7 @@ namespace Restaurant.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

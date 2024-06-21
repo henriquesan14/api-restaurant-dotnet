@@ -2,26 +2,25 @@
 using MediatR;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.TableCommands.CreateTable
 {
     public class CreateTableCommandHandler : IRequestHandler<CreateTableCommand, int>
     {
-        private readonly ITableRepository _tableRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateTableCommandHandler(ITableRepository tableRepository, IMapper mapper)
+        public CreateTableCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _tableRepository = tableRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<int> Handle(CreateTableCommand request, CancellationToken cancellationToken)
         {
             var table = _mapper.Map<Table>(request);
-            await _tableRepository.AddAsync(table);
+            await _unitOfWork.Tables.AddAsync(table);
+            await _unitOfWork.CompleteAsync();
             return table.Id;
         }
     }

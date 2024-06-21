@@ -1,45 +1,53 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Linq;
-using System;
 
 namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
 {
     public class CreateDeliveryOrderCommandHandler : IRequestHandler<CreateDeliveryOrderCommand, int>
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateDeliveryOrderCommandHandler(IOrderRepository orderRepository, IMapper mapper, IProductRepository productRepository)
+        public CreateDeliveryOrderCommandHandler(IUnitOfWork unitOfWork)
         {
-            _orderRepository = orderRepository;
-            _mapper = mapper;
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<int> Handle(CreateDeliveryOrderCommand request, CancellationToken cancellationToken)
         {
-            // TODO: implementar lógica de autorização
-            var entity = _mapper.Map<DeliveryOrder>(request);
+            var entity = new DeliveryOrder();
+            entity.AddressId = request.AddressId;
+            entity.ClientId = request.ClientId;
             decimal valueTotal = 0;
             entity.Status = Core.Enums.OrderStatusEnum.CREATED;
             entity.Type = "Delivery";
-            entity.ValueTotal = entity.Items.Sum(i => i.SubTotal);
-            entity.Items.ToList().ForEach(async i =>
-            {
-                i.Status = Core.Enums.OrderItemStatusEnum.PENDING;
-                i.CreatedAt = DateTime.Now;
-                var product = await _productRepository.GetByIdAsync(i.ProductId);
-                valueTotal += product.Price * i.Quantity;
-            });
-            entity.ValueTotal = valueTotal;
 
-            var result = await _orderRepository.AddAsync(entity);
+            await _unitOfWork.BeginTransaction();
+
+            var orderItems = new List<OrderItem>();
+            foreach (var item in request.Items)
+            {
+                var orderItem = new OrderItem();
+                var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId!.Value);
+
+                orderItem.Product = product;
+                orderItem.Quantity = item.Quantity!.Value;
+                orderItem.Status = Core.Enums.OrderItemStatusEnum.PENDING;
+                orderItem.CreatedAt = DateTime.UtcNow;
+
+                orderItems.Add(orderItem);
+                valueTotal += product.Price * item.Quantity!.Value;
+            }
+
+            entity.ValueTotal = valueTotal;
+            entity.Items = orderItems;
+
+            var result = await _unitOfWork.Orders.AddAsync(entity);
+
+            await _unitOfWork.CompleteAsync();
+
+            await _unitOfWork.CommitAsync();
+
             return result.Id;
         }
     }

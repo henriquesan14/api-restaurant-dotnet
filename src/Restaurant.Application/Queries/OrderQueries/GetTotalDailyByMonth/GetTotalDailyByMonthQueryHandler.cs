@@ -2,10 +2,6 @@
 using MediatR;
 using Restaurant.Application.ViewModels;
 using Restaurant.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Queries.OrderQueries.GetTotalDailyByMonth
 {
@@ -22,7 +18,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetTotalDailyByMonth
 
         public async Task<List<StatisticOrderViewModel>> Handle(GetTotalDailyByMonthQuery request, CancellationToken cancellationToken)
         {
-            int month = request.Month ?? DateTime.Now.Month;
+            int month = request.Month ?? DateTime.UtcNow.Month;
             var result = await _orderRepository.GetTotalDailyByMonth(month);
             return _mapper.Map<List<StatisticOrderViewModel>>(result);
         }
