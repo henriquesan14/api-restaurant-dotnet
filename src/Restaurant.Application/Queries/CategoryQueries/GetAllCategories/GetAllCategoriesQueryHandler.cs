@@ -21,8 +21,7 @@ namespace Restaurant.Application.Queries.CategoryQueries.GetByCategoryType
 
         public async Task<PagedListViewModel<CategoryViewModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<Category, bool>> predicate = p => (request.Name == null || p.Name.ToLower().Contains(request.Name.ToLower())) &&
-            (p.CategoryType.Equals(request.CategoryType) || request.CategoryType == null);
+            Expression<Func<ProductCategory, bool>> predicate = p => (request.Name == null || p.Name.ToLower().Contains(request.Name.ToLower()));
            
             var list = await _unitOfWork.Categories.GetAsync(predicate, pageNumber: request.PageNumber, pageSize: request.PageSize);
             var count = await _unitOfWork.Categories.GetCountAsync(predicate);

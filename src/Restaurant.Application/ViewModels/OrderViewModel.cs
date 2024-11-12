@@ -1,7 +1,5 @@
 ﻿using Restaurant.Core.Entities;
 using Restaurant.Core.Enums;
-using System;
-using System.Collections.Generic;
 
 namespace Restaurant.Application.ViewModels
 {
@@ -15,7 +13,7 @@ namespace Restaurant.Application.ViewModels
         public User Employee { get; set; }
 
         public Address Address { get; set; }
-        public IEnumerable<OrderItem> Items { get; set; }
+        public IEnumerable<OrderItemViewModel> Items { get; set; }
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

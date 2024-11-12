@@ -31,7 +31,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
             else
             {
                 orders = await _unitOfWork.Orders.GetAllDeliveryOrdersAsync(request.PageSize, request.PageNumber, request.Status, request.Date);
-                count = await _unitOfWork.Orders.GetCountCommonOrdersAsync(request.Status, request.Date);
+                count = await _unitOfWork.Orders.GetCountDeliveryOrdersAsync(request.Status, request.Date);
             }
 
             var ordersViewModel = _mapper.Map<List<OrderViewModel>>(orders);

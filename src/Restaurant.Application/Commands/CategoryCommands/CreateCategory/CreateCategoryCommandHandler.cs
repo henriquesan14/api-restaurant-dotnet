@@ -18,7 +18,7 @@ namespace Restaurant.Application.Commands.CategoryCommands.CreateCategory
 
         public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = _mapper.Map<Category>(request);
+            var category = _mapper.Map<ProductCategory>(request);
             await _unitOfWork.Categories.AddAsync(category);
             await _unitOfWork.CompleteAsync();
             return category.Id;

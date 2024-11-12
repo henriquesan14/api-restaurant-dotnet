@@ -16,9 +16,12 @@ namespace Restaurant.Infra.Persistence.Repositories
         public IProductRepository Products { get; }
         public ITableRepository Tables { get; }
         public IUserRepository Users { get; }
+        public IMenuItemRepository MenuItems { get; }
+        public IStockProductRepository StockProducts { get; }
+        public IStockMovementRepository StockMovements { get; }
 
         public UnitOfWork(RestaurantContext dbContext, IAddressRepository addresses, ICategoryRepository categories,
-            IOrderItemRepository orderItems, IOrderRepository orders, IProductRepository products, ITableRepository tables, IUserRepository users)
+            IOrderItemRepository orderItems, IOrderRepository orders, IProductRepository products, ITableRepository tables, IUserRepository users, IMenuItemRepository menuItems, IStockProductRepository stockProducts, IStockMovementRepository stockMovements)
         {
             _dbContext = dbContext;
             Addresses = addresses;
@@ -28,6 +31,9 @@ namespace Restaurant.Infra.Persistence.Repositories
             Products = products;
             Tables = tables;
             Users = users;
+            MenuItems = menuItems;
+            StockProducts = stockProducts;
+            StockMovements = stockMovements;
         }
 
         public async Task BeginTransaction()

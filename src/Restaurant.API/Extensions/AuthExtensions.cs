@@ -22,9 +22,12 @@ namespace Restaurant.API.Extensions
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero, // Sem tolerância para atraso no tempo de expiração
+                    ValidateLifetime = true // Isso deve garantir que a expiração seja validada
                 };
             });
+
 
             services.AddAuthorization(options =>
             {

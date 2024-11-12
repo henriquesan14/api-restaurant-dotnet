@@ -1,4 +1,5 @@
 ﻿using Restaurant.Core.Entities.Base;
+using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
 {
@@ -10,12 +11,10 @@ namespace Restaurant.Core.Entities
         {
         }
 
-        public Product(string name, string description, decimal price, string imageUrl, Category category, int categoryId)
+        public Product(string name, string description, ProductCategory category, int categoryId)
         {
             Name = name;
             Description = description;
-            Price = price;
-            ImageUrl = imageUrl;
             Category = category;
             CategoryId = categoryId;
         }
@@ -24,12 +23,22 @@ namespace Restaurant.Core.Entities
 
         public string Description { get; set; }
 
-        public decimal Price { get; set; }
 
-        public string ImageUrl { get; set; }
-
-        public virtual Category Category { get; set; }
+        public virtual ProductCategory Category { get; set; }
         public int CategoryId { get; set; }
+
+        public decimal QuantityInStock { get; set; }
+
+        public string UnitOfMeasure { get; set; }
+
+        // Relacionamento com estoque
+        public StockProduct StockProduct { get; set; }
+
+        [JsonIgnore]
+        public ICollection<MenuItemProduct> MenuItemProducts { get; set; } = new List<MenuItemProduct>();
+
+        [JsonIgnore]
+        public ICollection<StockMovement> StockMovements { get; set; } = new List<StockMovement>();
 
     }
 }

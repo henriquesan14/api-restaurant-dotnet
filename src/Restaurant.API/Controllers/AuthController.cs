@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Commands.UserCommands.RegisterUserCommand;
 using Restaurant.Application.Queries.UserQueries;
-using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
 {

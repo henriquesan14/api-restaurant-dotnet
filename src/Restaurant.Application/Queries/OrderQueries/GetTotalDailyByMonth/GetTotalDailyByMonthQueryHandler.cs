@@ -18,7 +18,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetTotalDailyByMonth
 
         public async Task<List<StatisticOrderViewModel>> Handle(GetTotalDailyByMonthQuery request, CancellationToken cancellationToken)
         {
-            int month = request.Month ?? DateTime.UtcNow.Month;
+            int month = request.Month ?? DateTime.Now.Month;
             var result = await _orderRepository.GetTotalDailyByMonth(month);
             return _mapper.Map<List<StatisticOrderViewModel>>(result);
         }

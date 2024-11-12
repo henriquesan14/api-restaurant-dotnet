@@ -1,10 +1,11 @@
-﻿using Restaurant.Application.Services;
+﻿using Restaurant.Application.Identity;
 using Restaurant.Core.Repositories;
 using Restaurant.Core.Repositories.Base;
 using Restaurant.Core.Services;
 using Restaurant.Infra.MessageBus;
 using Restaurant.Infra.Persistence.Repositories;
 using Restaurant.Infra.Persistence.Repositories.Base;
+using Restaurant.Infra.Services;
 
 namespace Restaurant.API.Extensions
 {
@@ -22,12 +23,18 @@ namespace Restaurant.API.Extensions
             services.AddTransient<ITableRepository, TableRepository>();
             services.AddTransient<IOrderItemRepository, OrderItemRepository>();
             services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IMenuItemRepository, MenuItemRepository>();
+            services.AddTransient<IStockProductRepository, StockProductRepository>();
+            services.AddTransient<IStockMovementRepository, StockMovementRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<IMessageBusService, MessageBusService>();
             services.AddScoped<IPaymentService, PaymentService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<AuthenticatedUser>();
 
             return services;
         }

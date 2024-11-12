@@ -28,15 +28,15 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
             foreach (var item in request.Items)
             {
                 var orderItem = new OrderItem();
-                var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId!.Value);
+                var product = await _unitOfWork.Products.GetByIdAsync(item.MenuItemId!.Value);
 
-                orderItem.Product = product;
+                
                 orderItem.Quantity = item.Quantity!.Value;
                 orderItem.Status = Core.Enums.OrderItemStatusEnum.PENDING;
-                orderItem.CreatedAt = DateTime.UtcNow;
+                orderItem.CreatedAt = DateTime.Now;
 
                 orderItems.Add(orderItem);
-                valueTotal += product.Price * item.Quantity!.Value;
+                //valueTotal += product.Price * item.Quantity!.Value;
             }
 
             entity.ValueTotal = valueTotal;

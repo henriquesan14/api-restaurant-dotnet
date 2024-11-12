@@ -1,8 +1,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.API.Extensions;
 using Restaurant.API.Filters;
+using Restaurant.Application.Behaviors;
 using Restaurant.Application.Consumers;
 using Restaurant.Application.Validators;
 using Restaurant.Infra.Persistence;
@@ -31,6 +33,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateCommonOrderCommandVal
 
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CreatedByBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UpdatedByBehavior<,>));
 
 builder.Services.JsonSerializationConfig();
 

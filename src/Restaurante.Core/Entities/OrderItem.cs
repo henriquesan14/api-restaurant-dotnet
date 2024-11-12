@@ -6,11 +6,11 @@ namespace Restaurant.Core.Entities
 {
     public class OrderItem : Entity
     {
-        public OrderItem(int quantity, OrderItemStatusEnum status, Product product, Order order)
+        public OrderItem(int quantity, OrderItemStatusEnum status, MenuItem product, Order order)
         {
             Quantity = quantity;
             Status = status;
-            Product = product;
+            MenuItem = product;
             Order = order;
         }
 
@@ -22,18 +22,20 @@ namespace Restaurant.Core.Entities
 
         public OrderItemStatusEnum Status{ get; set; }
 
-        public virtual Product Product { get; set; }
+        public virtual MenuItem MenuItem { get; set; }
         [JsonIgnore]
-        public int ProductId { get; set; }
+        public int MenuItemId { get; set; }
 
         [JsonIgnore]
         public virtual Order Order { get; set; }
         [JsonIgnore]
         public int OrderId { get; set; }
 
+        public string? Observation { get; set; }
+
         public decimal SubTotal
         {
-            get { return Product != null ? Product.Price * Quantity : 0; }
+            get { return MenuItem != null ? MenuItem.Price * Quantity : 0; }
         }
     }
 }

@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Restaurant.Core.Entities;
-using Restaurant.Core.Enums;
+using Restaurant.Core.Repositories;
 using Restaurant.Infra.Persistence.Repositories.Base;
 
 namespace Restaurant.Infra.Persistence.Repositories
 {
-    public class CategoryRepository : BaseRepository<Category>, Core.Repositories.ICategoryRepository
+    public class CategoryRepository : BaseRepository<ProductCategory>, ICategoryRepository
     {
         public CategoryRepository(RestaurantContext context) : base(context)
         {
         }
 
-        public async Task<IReadOnlyList<Category>> GetAllAsync(int pageSize, int pageNumber,CategoryTypeEnum? category, string name)
+        public async Task<IReadOnlyList<ProductCategory>> GetAllAsync(int pageSize, int pageNumber, string name)
         {
-            var result = await DbContext.Set<Category>()
+            var result = await DbContext.Set<ProductCategory>()
                 .AsNoTracking()
-                    .Where(c => (c.CategoryType == category || !category.HasValue) && (c.Name.Contains(name) || name == null))
+                    .Where(c => ((c.Name.Contains(name) || name == null)))
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                             .ToListAsync();

@@ -10,9 +10,9 @@ namespace Restaurant.Application.Mappers
     {
         public CategoryMapper()
         {
-            CreateMap<CreateCategoryCommand, Category>().ReverseMap();
-            CreateMap<CategoryViewModel, Category>().ReverseMap();
-            CreateMap<UpdateCategoryCommand, Category>().ReverseMap();
+            CreateMap<CreateCategoryCommand, ProductCategory>().ReverseMap();
+            CreateMap<CategoryViewModel, ProductCategory>().ReverseMap();
+            CreateMap<UpdateCategoryCommand, ProductCategory>().ReverseMap();
         }
     }
 }

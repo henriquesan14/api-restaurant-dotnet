@@ -16,7 +16,7 @@ namespace Restaurant.API.Controllers
         }
 
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {

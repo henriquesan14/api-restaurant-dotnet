@@ -18,7 +18,7 @@ namespace Restaurant.Application.Queries.OrderItemQueries.GetCountOrderItemToday
 
         public async Task<CountOrderItemViewModel> Handle(GetCountOrderItemTodayQuery request, CancellationToken cancellationToken)
         {
-            var today = DateTime.UtcNow.Date;
+            var today = DateTime.Now.Date;
             var count = await _orderItemRepository.GetCountOrderItemsToday(today);
             return new CountOrderItemViewModel { Date = today, Count = count };
         }

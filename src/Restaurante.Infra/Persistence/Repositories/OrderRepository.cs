@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Entities.Statistic;
+using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories;
 using Restaurant.Infra.Persistence.Repositories.Base;
 
@@ -10,43 +10,42 @@ namespace Restaurant.Infra.Persistence.Repositories
 {
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
-        IConfiguration _configuration;
-        public OrderRepository(RestaurantContext context, IConfiguration configuration) : base(context)
+        public OrderRepository(RestaurantContext context) : base(context)
         {
-            _configuration = configuration;
         }
-        public async Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date)
+        public async Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, OrderStatusEnum? status, DateTime? date)
         {
             return await DbContext.Set<CommonOrder>()
                 .AsNoTracking()
-                .Where(o => ((int) o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
-                .Include(o => o.Table)
-                .Include(o => o.Employee)
+                .Where(o => (o.Status == status || status == null) && (o.CreatedAt.Date == date || date == null))
                 .Include(o => o.Client)
+                .Include(o => o.Table)
+                .Include(o => o.CreatedByUser)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();
+
         }
 
-        public async Task<int> GetCountCommonOrdersAsync(int? status, DateTime? date)
+        public async Task<int> GetCountCommonOrdersAsync(OrderStatusEnum? status, DateTime? date)
         {
-            return await DbContext.Set<CommonOrder>().CountAsync(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue));
+            return await DbContext.Set<CommonOrder>().CountAsync(o => (o.Status == status || status == null) && (o.CreatedAt.Date == date || date == null));
         }
 
-        public async Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, int? status, DateTime? date)
+        public async Task<IReadOnlyList<DeliveryOrder>> GetAllDeliveryOrdersAsync(int pageSize, int pageNumber, OrderStatusEnum? status, DateTime? date)
         {
             return await DbContext.Set<DeliveryOrder>()
                 .AsNoTracking()
-                .Where(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
+                .Where(o => (o.Status == status || status == null) && (o.CreatedAt.Date == date || date == null))
                 .Include(o => o.Client)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();
         }
 
-        public async Task<int> GetCountDeliveryOrdersAsync(int? status, DateTime? date)
+        public async Task<int> GetCountDeliveryOrdersAsync(OrderStatusEnum? status, DateTime? date)
         {
-            return await DbContext.Set<DeliveryOrder>().CountAsync(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue));
+            return await DbContext.Set<DeliveryOrder>().CountAsync(o => (o.Status == status || status == null) && (o.CreatedAt.Date == date || date == null));
         }
 
         public async Task<IReadOnlyCollection<Order>> GetOrdersByClient(int pageSize, int pageNumber, int clientId)
@@ -64,7 +63,7 @@ namespace Restaurant.Infra.Persistence.Repositories
         {
             return await DbContext.Set<Order>()
                 .AsNoTracking()
-                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                .Include(o => o.Items).ThenInclude(i => i.MenuItem).ThenInclude(p => p.MenuCategory)
                                     .FirstOrDefaultAsync(o => o.Id == id);
         }
 
@@ -74,10 +73,16 @@ namespace Restaurant.Infra.Persistence.Repositories
             return await DbContext.Set<CommonOrder>()
                 .AsNoTracking()
                 .Include(o => o.Table)
-                .Include(o => o.Employee)
+                .Include(o => o.CreatedByUser)
                 .Include(o => o.Client)
-                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
-                                    .FirstOrDefaultAsync(o => o.Id == id);
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                        .ThenInclude(m => m.MenuCategory)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                        .ThenInclude(m => m.NeededProducts)
+                            .ThenInclude(np => np.Product) // Inclui detalhes de cada produto necessário
+                .FirstOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<DeliveryOrder> GetDeliveryOrderByIdAsync(int id)
@@ -86,7 +91,13 @@ namespace Restaurant.Infra.Persistence.Repositories
                 .AsNoTracking()
                 .Include(o => o.Address)
                 .Include(o => o.Client)
-                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                        .ThenInclude(p => p.MenuCategory)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.MenuItem)
+                        .ThenInclude(m => m.NeededProducts)
+                            .ThenInclude(np => np.Product)
                                     .FirstOrDefaultAsync(o => o.Id == id);
 
         }
@@ -112,13 +123,18 @@ namespace Restaurant.Infra.Persistence.Repositories
 
         public async Task<List<StatisticOrder>> GetTotalDailyByMonth(int month)
         {
-            var query = @"SELECT DAY(o.CreatedAt ) AS Day,
-                            MONTH(o.CreatedAt ) AS Month,
-                            SUM(o.ValueTotal ) AS Total 
-                            FROM Orders o 
-                            WHERE MONTH(o.CreatedAt) = @Month
-                            GROUP BY DAY(o.CreatedAt ),MONTH(o.CreatedAt) 
-                            ORDER BY DAY(o.CreatedAt) ASC";
+            var query = @"SELECT 
+                        EXTRACT(DAY FROM o.""CreatedAt"") AS Day,
+                        EXTRACT(MONTH FROM o.""CreatedAt"") AS Month,
+                        SUM(o.""ValueTotal"") AS Total
+                    FROM 
+                       ""Orders"" o
+                    WHERE 
+                        EXTRACT(MONTH FROM o.""CreatedAt"") = @Month
+                    GROUP BY 
+                        EXTRACT(DAY FROM o.""CreatedAt""), EXTRACT(MONTH FROM o.""CreatedAt"")
+                    ORDER BY 
+                        EXTRACT(DAY FROM o.""CreatedAt"") ASC;";
             var result = await DbContext.Database.GetDbConnection().QueryAsync<StatisticOrder>(query, new { Month = month });
             return result.ToList();
         }

@@ -14,39 +14,60 @@ namespace Restaurant.Infra.Persistence
         public DbSet<Order> Orders { get; set; }
         public DbSet<CommonOrder> CommonOrders { get; set; }
         public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public DbSet<OrderItem> OrderItems { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<State> States { get; set; }
+        
+
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<MenuItemProduct> MenuItemProducts { get; set; }
+        public DbSet<MenuCategory> MenuCategories { get; set; }
+
+        public DbSet<StockProduct> StockProducts { get; set; }
+        public DbSet<StockMovement> StockMovements { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AddressMapping());
-            modelBuilder.ApplyConfiguration(new CategoryMapping());
-            modelBuilder.ApplyConfiguration(new CityMapping());
-            modelBuilder.ApplyConfiguration(new OrderMapping());
-            modelBuilder.ApplyConfiguration(new CommonOrderMapping());
-            modelBuilder.ApplyConfiguration(new DeliveryOrderMapping());
-            modelBuilder.ApplyConfiguration(new OrderItemMapping());
-            modelBuilder.ApplyConfiguration(new ProductMapping());
-            modelBuilder.ApplyConfiguration(new RoleMapping());
-            modelBuilder.ApplyConfiguration(new StateMapping());
-            modelBuilder.ApplyConfiguration(new UserMapping());
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new CityConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new CommonOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new DeliveryOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new StateConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new TableConfiguration());
+            modelBuilder.ApplyConfiguration(new MenuConfiguration());
+            modelBuilder.ApplyConfiguration(new MenuCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new MenuItemConfiguration());
+            modelBuilder.ApplyConfiguration(new MenuItemProductConfiguration());
+            modelBuilder.ApplyConfiguration(new StockProductConfiguration());
+            modelBuilder.ApplyConfiguration(new StockMovementConfiguration());
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                foreach (var property in entityType.GetProperties())
+                if (typeof(Entity).IsAssignableFrom(entityType.ClrType))
                 {
-                    if (property.ClrType == typeof(DateTime))
-                    {
-                        property.SetValueConverter(new ValueConverter<DateTime, DateTime>(
-                            v => v.ToUniversalTime(),
-                            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)));
-                    }
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
                 }
             }
         }
@@ -58,11 +79,11 @@ namespace Restaurant.Infra.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedAt = DateTime.UtcNow;
+                        entry.Entity.CreatedAt = DateTime.Now;
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.UpdatedAt = DateTime.UtcNow;
+                        entry.Entity.UpdatedAt = DateTime.Now;
                         break;
                 }
 

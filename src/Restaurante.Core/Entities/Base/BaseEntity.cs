@@ -5,13 +5,13 @@
     {
         public virtual TId Id { get; protected set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public int CreatedById { get; set; }
+        public int CreatedByUserId { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 
-        public int? UpdatedById { get; set; }
+        public int? UpdatedByUserId { get; set; }
 
         int? _requestedHashCode;
 

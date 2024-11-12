@@ -5,7 +5,6 @@
         public virtual Table Table { get; set; }
         public int? TableId { get; set; }
 
-        public virtual User Employee { get; set; }
-        public int EmployeeId { get; set; }
+        public virtual User CreatedByUser { get; set; }
     }
 }
