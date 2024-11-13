@@ -21,11 +21,6 @@ namespace Restaurant.Infra.Mappings
             builder.HasMany(c => c.Items)
                 .WithOne(i => i.MenuCategory)
                 .HasForeignKey(i => i.MenuCategoryId);
-
-            builder.HasOne(c => c.Menu)
-                .WithMany(m => m.Categories)
-                .HasForeignKey(c => c.MenuId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

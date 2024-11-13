@@ -5,9 +5,9 @@ using Restaurant.Infra.Persistence.Repositories.Base;
 
 namespace Restaurant.Infra.Persistence.Repositories
 {
-    public class CategoryRepository : BaseRepository<ProductCategory>, ICategoryRepository
+    public class ProductCategoryRepository : BaseRepository<ProductCategory>, IProductCategoryRepository
     {
-        public CategoryRepository(RestaurantContext context) : base(context)
+        public ProductCategoryRepository(RestaurantContext context) : base(context)
         {
         }
 

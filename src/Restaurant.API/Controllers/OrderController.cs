@@ -17,6 +17,7 @@ namespace Restaurant.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class OrderController : BaseController
     {
         private readonly IMediator _mediator;

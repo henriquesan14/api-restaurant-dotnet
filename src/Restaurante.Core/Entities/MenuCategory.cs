@@ -11,10 +11,5 @@ namespace Restaurant.Core.Entities
         // Lista de itens na categoria
         [JsonIgnore]
         public List<MenuItem> Items { get; set; } = new List<MenuItem>();
-
-        // Relacionamento com o Menu ao qual a categoria pertence
-        public int MenuId { get; set; }
-        [JsonIgnore]
-        public Menu Menu { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
+using Restaurant.Application.Commands.ProductCategoryCommands.UpdateCategory;
 
 namespace Restaurant.Application.Validators
 {
-    public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
+    public class UpdateProductCategoryValidator : AbstractValidator<UpdateProductCategoryCommand>
     {
-        public CreateCategoryCommandValidator()
+        public UpdateProductCategoryValidator()
         {
             RuleFor(u => u.Name)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório");

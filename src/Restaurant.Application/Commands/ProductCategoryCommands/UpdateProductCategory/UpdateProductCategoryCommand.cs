@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Restaurant.Core.Request;
 
-namespace Restaurant.Application.Commands.CategoryCommands.UpdateCategory
+namespace Restaurant.Application.Commands.ProductCategoryCommands.UpdateCategory
 {
-    public class UpdateCategoryCommand : IRequest<int>, IUpdatedByRequest
+    public class UpdateProductCategoryCommand : IRequest<int>, IUpdatedByRequest
     {
         public int Id { get; set; }
 

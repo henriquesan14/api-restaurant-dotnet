@@ -1,18 +1,18 @@
 ﻿using MediatR;
 using Restaurant.Core.Repositories;
 
-namespace Restaurant.Application.Commands.CategoryCommands.DeleteCategory
+namespace Restaurant.Application.Commands.ProductCategoryCommands.DeleteCategory
 {
-    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, int>
+    public class DeleteProductCategoryCommandHandler : IRequestHandler<DeleteProductCategoryCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteCategoryCommandHandler(IUnitOfWork unitOfWork)
+        public DeleteProductCategoryCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteProductCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = await _unitOfWork.Categories.GetByIdAsync(request.Id);
             if(category == null)

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Restaurant.Application.Commands.CategoryCommands.CreateCategory;
-using Restaurant.Application.Commands.CategoryCommands.DeleteCategory;
-using Restaurant.Application.Commands.CategoryCommands.UpdateCategory;
+using Restaurant.Application.Commands.ProductCategoryCommands.CreateCategory;
+using Restaurant.Application.Commands.ProductCategoryCommands.DeleteCategory;
+using Restaurant.Application.Commands.ProductCategoryCommands.UpdateCategory;
 using Restaurant.Application.Queries.CategoryQueries.GetByCategoryType;
 
 namespace Restaurant.API.Controllers
@@ -11,18 +11,18 @@ namespace Restaurant.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class CategoryController : ControllerBase
+    public class ProductCategoryController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public CategoryController(IMediator mediator)
+        public ProductCategoryController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateProductCategoryCommand command)
         {
             var id = await _mediator.Send(command);
 
@@ -38,7 +38,7 @@ namespace Restaurant.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
+        public async Task<IActionResult> Update([FromBody] UpdateProductCategoryCommand command)
         {
             var id = await _mediator.Send(command);
             if(id == 0)
@@ -52,7 +52,7 @@ namespace Restaurant.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteCategoryCommand(id);
+            var command = new DeleteProductCategoryCommand(id);
             var result = await _mediator.Send(command);
             if (result == 0)
             {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Restaurant.Infra.Persistence;
@@ -11,9 +12,11 @@ using Restaurant.Infra.Persistence;
 namespace Restaurant.Infra.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20241112150556_AjusteMigrate")]
+    partial class AjusteMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,6 +174,9 @@ namespace Restaurant.Infra.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<int>("MenuId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -183,6 +189,8 @@ namespace Restaurant.Infra.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
 
                     b.ToTable("MenuCategories", (string)null);
                 });
@@ -214,9 +222,6 @@ namespace Restaurant.Infra.Migrations
                     b.Property<int>("MenuCategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MenuId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -234,8 +239,6 @@ namespace Restaurant.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MenuCategoryId");
-
-                    b.HasIndex("MenuId");
 
                     b.ToTable("MenuItems", (string)null);
                 });
@@ -748,6 +751,17 @@ namespace Restaurant.Infra.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("Restaurant.Core.Entities.MenuCategory", b =>
+                {
+                    b.HasOne("Restaurant.Core.Entities.Menu", "Menu")
+                        .WithMany("Categories")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
+                });
+
             modelBuilder.Entity("Restaurant.Core.Entities.MenuItem", b =>
                 {
                     b.HasOne("Restaurant.Core.Entities.MenuCategory", "MenuCategory")
@@ -755,14 +769,6 @@ namespace Restaurant.Infra.Migrations
                         .HasForeignKey("MenuCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Restaurant.Core.Entities.Menu", "Menu")
-                        .WithMany("Items")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
 
                     b.Navigation("MenuCategory");
                 });
@@ -907,7 +913,7 @@ namespace Restaurant.Infra.Migrations
 
             modelBuilder.Entity("Restaurant.Core.Entities.Menu", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("Restaurant.Core.Entities.MenuCategory", b =>

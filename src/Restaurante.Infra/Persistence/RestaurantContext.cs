@@ -87,8 +87,17 @@ namespace Restaurant.Infra.Persistence
                         break;
                 }
 
-                
+                if (entry.Entity is MenuItemProduct menuItemProduct && entry.State == EntityState.Added)
+                {
+                    if (menuItemProduct.MenuItemId == 0)
+                    {
+                        menuItemProduct.CreatedByUserId = menuItemProduct.MenuItem.CreatedByUserId;
+                    }
+                }
+
+
             }
+
 
             return base.SaveChangesAsync(cancellationToken);
         }

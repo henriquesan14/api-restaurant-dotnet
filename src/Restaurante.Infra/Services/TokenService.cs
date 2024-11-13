@@ -30,7 +30,7 @@ namespace Restaurant.Infra.Services
                     new Claim(ClaimTypes.Email, user.Email.ToString()),
                     new Claim(ClaimTypes.Role, user.Role.Name.ToString()!)
                 }),
-                Expires = DateTime.UtcNow.AddHours(12),
+                Expires = DateTime.UtcNow.AddMonths(12),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             

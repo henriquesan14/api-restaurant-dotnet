@@ -2,20 +2,20 @@
 using MediatR;
 using Restaurant.Core.Repositories;
 
-namespace Restaurant.Application.Commands.CategoryCommands.UpdateCategory
+namespace Restaurant.Application.Commands.ProductCategoryCommands.UpdateCategory
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, int>
+    public class UpdateProductCategoryCommandHandler : IRequestHandler<UpdateProductCategoryCommand, int>
     {
         public readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateProductCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(UpdateProductCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = await _unitOfWork.Categories.GetByIdAsync(request.Id);
             if(category == null)

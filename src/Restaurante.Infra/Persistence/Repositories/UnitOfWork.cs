@@ -10,18 +10,20 @@ namespace Restaurant.Infra.Persistence.Repositories
 
 
         public IAddressRepository Addresses { get;}
-        public ICategoryRepository Categories { get; }
+        public IProductCategoryRepository Categories { get; }
         public IOrderItemRepository OrderItems { get; }
         public IOrderRepository Orders { get; }
         public IProductRepository Products { get; }
         public ITableRepository Tables { get; }
         public IUserRepository Users { get; }
         public IMenuItemRepository MenuItems { get; }
+        public IMenuCategoryRepository MenuCategories { get; }
+        public IMenuRepository Menus { get; }
         public IStockProductRepository StockProducts { get; }
         public IStockMovementRepository StockMovements { get; }
 
-        public UnitOfWork(RestaurantContext dbContext, IAddressRepository addresses, ICategoryRepository categories,
-            IOrderItemRepository orderItems, IOrderRepository orders, IProductRepository products, ITableRepository tables, IUserRepository users, IMenuItemRepository menuItems, IStockProductRepository stockProducts, IStockMovementRepository stockMovements)
+        public UnitOfWork(RestaurantContext dbContext, IAddressRepository addresses, IProductCategoryRepository categories,
+            IOrderItemRepository orderItems, IOrderRepository orders, IProductRepository products, ITableRepository tables, IUserRepository users, IMenuItemRepository menuItems, IStockProductRepository stockProducts, IStockMovementRepository stockMovements, IMenuCategoryRepository menuCategories, IMenuRepository menus)
         {
             _dbContext = dbContext;
             Addresses = addresses;
@@ -34,6 +36,8 @@ namespace Restaurant.Infra.Persistence.Repositories
             MenuItems = menuItems;
             StockProducts = stockProducts;
             StockMovements = stockMovements;
+            MenuCategories = menuCategories;
+            Menus = menus;
         }
 
         public async Task BeginTransaction()
