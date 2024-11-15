@@ -12,17 +12,21 @@ namespace Restaurant.Core.Entities
         {
         }
 
-        public Table(string name, TableStatusEnum status, IEnumerable<CommonOrder> orders)
+        public Table(string name, TableStatusEnum status)
         {
             Name = name;
             Status = status;
-            Orders = orders;
         }
 
-        public string Name { get; set; }
-        public TableStatusEnum Status { get; set; }
+        public string Name { get; private set; }
+        public TableStatusEnum Status { get; private set; }
         [JsonIgnore]
-        public virtual IEnumerable<CommonOrder> Orders { get; set; }
+        public virtual IEnumerable<CommonOrder> Orders { get; private set; }
+
+        public void UpdateStatus(TableStatusEnum status)
+        {
+            Status = status;
+        }
 
     }
 }

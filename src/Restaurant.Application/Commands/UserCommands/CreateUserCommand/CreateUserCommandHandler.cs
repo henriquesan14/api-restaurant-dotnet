@@ -1,36 +1,40 @@
 ﻿using AutoMapper;
 using MediatR;
 using Restaurant.Application.ViewModels;
+using Restaurant.Core.Common;
 using Restaurant.Core.Entities;
-using Restaurant.Core.Exceptions;
+using Restaurant.Core.Errors;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Commands.UserCommands.CreateUserCommand
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserViewModel>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<UserViewModel>>
     {
-        private readonly IUserRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateUserCommandHandler(IUserRepository repository, IMapper mapper)
+        public CreateUserCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<UserViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<UserViewModel>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            User userExist = await _repository.GetByEmail(request.Email);
+            User userExist = await _unitOfWork.Users.GetByEmail(request.Email);
             if (userExist != null)
             {
-                throw new UserAlreadyExistsException("Já possui um usuário com este email.");
+                return Result<UserViewModel>.Failure(ErrorMessages.USER_EMAIL_ALREADY_EXISTS);
             }
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
-            User userCreated = await _repository.AddAsync(_mapper.Map<User>(request));
+            var entity = _mapper.Map<User>(request);
+            await _unitOfWork.Users.AddAsync(entity);
 
-            return _mapper.Map<UserViewModel>(userCreated);
+            await _unitOfWork.CompleteAsync();
+
+            var viewModel = _mapper.Map<UserViewModel>(entity);
+
+            return Result<UserViewModel>.Success(viewModel);
         }
     }
 }

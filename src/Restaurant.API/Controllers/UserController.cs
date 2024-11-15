@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.API.Controllers.Base;
 using Restaurant.Application.Commands.UserCommands.CreateUserCommand;
 
 namespace Restaurant.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IMediator _mediator;
         public UserController(IMediator mediator)
@@ -20,8 +21,8 @@ namespace Restaurant.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
-            var id = await _mediator.Send(command);
-            return Ok(id);
+            var result = await _mediator.Send(command);
+            return HandleResult(result);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Restaurant.Application.Commands.OrderCommands.UpdateOrderStatusCommand
             Order order = await _uniOfWork.Orders.GetOrderById(request.OrderId) ;
             if (order != null)
             {
-                order.Status = Core.Enums.OrderStatusEnum.PENDING;
+                order.UpdateStatus(Core.Enums.OrderStatusEnum.PENDING);
                 var dto = new PaymentInfoDTO(request.OrderId, request.CreditCardNumber, request.Cvv, request.ExpiresAt, request.FullName, request.Amount) ;
                 _paymentService.ProcessPayment(dto);
                 _uniOfWork.Orders.UpdateAsync(order);

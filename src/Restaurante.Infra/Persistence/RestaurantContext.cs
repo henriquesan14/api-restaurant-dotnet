@@ -79,11 +79,11 @@ namespace Restaurant.Infra.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedAt = DateTime.Now;
+                        entry.Entity.SetCreatedAt(DateTime.Now);
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.UpdatedAt = DateTime.Now;
+                        entry.Entity.SetUpdatedAt(DateTime.Now);
                         break;
                 }
 
@@ -91,7 +91,7 @@ namespace Restaurant.Infra.Persistence
                 {
                     if (menuItemProduct.MenuItemId == 0)
                     {
-                        menuItemProduct.CreatedByUserId = menuItemProduct.MenuItem.CreatedByUserId;
+                        menuItemProduct.SetCreatedByUserId(menuItemProduct.MenuItem.CreatedByUserId);
                     }
                 }
 

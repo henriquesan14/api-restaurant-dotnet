@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Restaurant.Application.ViewModels;
+using Restaurant.Core.Common;
 using Restaurant.Core.Request;
 
 namespace Restaurant.Application.Commands.UserCommands.CreateUserCommand
 {
-    public class CreateUserCommand : IRequest<UserViewModel>, ICreatedByRequest
+    public class CreateUserCommand : IRequest<Result<UserViewModel>>, ICreatedByRequest
     {
         public string FirstName { get; set; }
 

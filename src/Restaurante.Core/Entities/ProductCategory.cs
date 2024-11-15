@@ -5,20 +5,19 @@ namespace Restaurant.Core.Entities
 {
     public class ProductCategory : Entity
     {
-        public ProductCategory(string name, IEnumerable<Product> products)
+        public ProductCategory(string name)
         {
             Name = name;
-            Products = products;
         }
 
         public ProductCategory()
         {
         }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
 
         [JsonIgnore]
-        public virtual IEnumerable<Product> Products { get; set; }
+        public virtual IEnumerable<Product> Products { get; private set; }
     }
 }

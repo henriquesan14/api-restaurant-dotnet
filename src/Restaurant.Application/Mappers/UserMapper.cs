@@ -10,9 +10,9 @@ namespace Restaurant.Application.Mappers
     {
         public UserMapper()
         {
-            CreateMap<User, UserViewModel>().ReverseMap();
-            CreateMap<User, CreateUserCommand>().ReverseMap();
-            CreateMap<User, RegisterUserCommand>().ReverseMap();
+            CreateMap<User, UserViewModel>();
+            CreateMap<CreateUserCommand, User>();
+            CreateMap<RegisterUserCommand, User>();
         }
     }
 }

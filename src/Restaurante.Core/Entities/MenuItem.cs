@@ -5,6 +5,21 @@ namespace Restaurant.Core.Entities
 {
     public class MenuItem : Entity
     {
+        public MenuItem()
+        {
+            
+        }
+
+        public MenuItem(string name, string description, decimal price, string imageUrl, int menuCategoryId, int menuId)
+        {
+            Name = name;
+            Description = description;
+            Price = price;
+            ImageUrl = imageUrl;
+            MenuCategoryId = menuCategoryId;
+            MenuId = menuId;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

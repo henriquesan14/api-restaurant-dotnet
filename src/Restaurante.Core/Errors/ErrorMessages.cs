@@ -3,5 +3,6 @@
     public static class ErrorMessages
     {
         public const string UNAUTHORIZED = "Email/Senha incorreto(s)";
+        public const string USER_EMAIL_ALREADY_EXISTS = "Já possui um usuário com este email";
     }
 }

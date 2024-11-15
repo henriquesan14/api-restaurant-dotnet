@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.API.Controllers.Base;
 using Restaurant.Application.Commands.UserCommands.RegisterUserCommand;
 using Restaurant.Application.Queries.UserQueries;
 
@@ -7,7 +8,7 @@ namespace Restaurant.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IMediator _mediator;
         public AuthController(IMediator mediator)
@@ -32,7 +33,7 @@ namespace Restaurant.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
+            return HandleResult(result);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Restaurant.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] GetAllOrdersQuery query)
         {
             var order = await _mediator.Send(query);
-            return Ok(order);
+            return HandleResult(order);
         }
 
         [HttpGet("{id}")]

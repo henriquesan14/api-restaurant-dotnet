@@ -2,13 +2,14 @@
 using MediatR;
 using Restaurant.Application.ViewModels;
 using Restaurant.Application.ViewModels.Page;
+using Restaurant.Core.Common;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories;
 
 namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
 {
-    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, PagedListViewModel<OrderViewModel>>
+    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Result<PagedListViewModel<OrderViewModel>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private IMapper _mapper;
@@ -19,7 +20,7 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
             _mapper = mapper;
         }
 
-        public async Task<PagedListViewModel<OrderViewModel>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagedListViewModel<OrderViewModel>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
             IReadOnlyCollection<Order> orders;
             int count;
@@ -35,8 +36,8 @@ namespace Restaurant.Application.Queries.OrderQueries.GetAllOrders
             }
 
             var ordersViewModel = _mapper.Map<List<OrderViewModel>>(orders);
-            return new PagedListViewModel<OrderViewModel>(ordersViewModel, count, request.PageNumber, request.PageSize);
-
+            var viewModel = new PagedListViewModel<OrderViewModel>(ordersViewModel, count, request.PageNumber, request.PageSize);
+            return Result<PagedListViewModel<OrderViewModel>>.Success(viewModel);
         }
     }
 }

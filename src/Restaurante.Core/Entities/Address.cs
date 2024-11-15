@@ -5,41 +5,36 @@ namespace Restaurant.Core.Entities
 {
     public class Address : Entity
     {
-        
-
         public Address()
         {
+            
         }
 
-        public Address(string street, string number, string district, string zipCode, string complement, City city,
-            int cityId, User user, int userId, IEnumerable<DeliveryOrder> orders)
+        public Address(string street, string number, string district, string zipCode, string complement,
+            int cityId)
         {
             Street = street;
             Number = number;
             District = district;
             ZipCode = zipCode;
             Complement = complement;
-            City = city;
             CityId = cityId;
-            User = user;
-            UserId = userId;
-            Orders = orders;
         }
 
-        public string Street { get; set; }
-        public string Number { get; set; }
-        public string District { get; set; }
-        public string ZipCode { get; set; }
-        public string Complement { get; set; }
-        public virtual City City { get; set; }
-        public int CityId { get; set; }
+        public string Street { get; private set; }
+        public string Number { get; private set; }
+        public string District { get; private set; }
+        public string ZipCode { get; private set; }
+        public string Complement { get; private set; }
+        public virtual City City { get; private set; }
+        public int CityId { get; private set; }
 
         [JsonIgnore]
-        public virtual User User { get; set; }
-        public int UserId { get; set; }
+        public virtual User User { get; private set; }
+        public int UserId { get; private set; }
 
         [JsonIgnore]
-        public virtual IEnumerable<DeliveryOrder> Orders { get; set; }
+        public virtual IEnumerable<DeliveryOrder> Orders { get; private set; }
 
     }
 }

@@ -1,28 +1,49 @@
 ﻿using Restaurant.Core.Entities.Base;
 using Restaurant.Core.Enums;
+using Restaurant.Core.Events;
+using System.Xml.Linq;
 
 namespace Restaurant.Core.Entities
 {
     public class StockProduct : Entity
     {
-        public Product Product { get; set; }
-        public int ProductId { get; set; }
-        public decimal QuantityInStock { get; set; }
 
-        public List<StockMovement> StockMovements { get; set; } = new List<StockMovement>();
-
-        public void AdjustStock(decimal quantity, MovementTypeEnum movementType)
+        public StockProduct()
         {
-            // Atualiza a quantidade de estoque com base no tipo de movimento (entrada ou saída)
-            QuantityInStock += movementType == MovementTypeEnum.ENTRY ? quantity : -quantity;
-
-            // Adiciona o registro de movimentação ao histórico
-            StockMovements.Add(new StockMovement
-            {
-                ProductId = ProductId,
-                Quantity = quantity,
-                MovementType = movementType
-            });
+            
         }
+
+        public StockProduct(int productId, decimal quantityInStock)
+        {
+            ProductId = productId;
+            QuantityInStock = quantityInStock;
+        }
+
+        public Product Product { get; private set; }
+        public int ProductId { get; private set; }
+        public decimal QuantityInStock { get; private set; }
+
+        public List<StockMovement> StockMovements { get; private set; }
+
+        public void AddStock(decimal quantity)
+        {
+            if (quantity <= 0)
+                throw new ArgumentException("A quantidade deve ser maior que zero.", nameof(quantity));
+
+            QuantityInStock += quantity;
+        }
+
+        // Método para diminuir estoque
+        public void RemoveStock(decimal quantity)
+        {
+            if (quantity <= 0)
+                throw new ArgumentException("A quantidade deve ser maior que zero.", nameof(quantity));
+
+            if (quantity > QuantityInStock)
+                throw new InvalidOperationException("Quantidade insuficiente em estoque.");
+
+            QuantityInStock -= quantity;
+        }
+
     }
 }

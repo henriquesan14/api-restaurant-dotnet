@@ -13,6 +13,7 @@ namespace Restaurant.Infra.Persistence.Repositories
         public OrderRepository(RestaurantContext context) : base(context)
         {
         }
+
         public async Task<IReadOnlyList<CommonOrder>> GetAllCommonOrdersAsync(int pageSize, int pageNumber, OrderStatusEnum? status, DateTime? date)
         {
             return await DbContext.Set<CommonOrder>()
@@ -38,6 +39,7 @@ namespace Restaurant.Infra.Persistence.Repositories
                 .AsNoTracking()
                 .Where(o => (o.Status == status || status == null) && (o.CreatedAt.Date == date || date == null))
                 .Include(o => o.Client)
+                .Include(o => o.Address)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();

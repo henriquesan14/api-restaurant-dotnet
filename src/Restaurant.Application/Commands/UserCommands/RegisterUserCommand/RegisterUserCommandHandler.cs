@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
+using Restaurant.Application.ViewModels;
+using Restaurant.Core.Common;
 using Restaurant.Core.Entities;
-using Restaurant.Core.Exceptions;
+using Restaurant.Core.Errors;
 using Restaurant.Core.Repositories;
 
 namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, int>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<UserViewModel>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -17,37 +19,32 @@ namespace Restaurant.Application.Commands.UserCommands.RegisterUserCommand
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<UserViewModel>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             User userExist = await _unitOfWork.Users.GetByEmail(request.Email);
             if (userExist != null)
             {
-                throw new UserAlreadyExistsException("Já possui um usuário com este email");
+                return Result<UserViewModel>.Failure(ErrorMessages.USER_EMAIL_ALREADY_EXISTS);
             }
-            var addresses = new List<Address>() {
-                new Address
-                {
-                    Street = request.Street,
-                    Number = request.Number,
-                    District = request.District,
-                    ZipCode = request.ZipCode,
-                    Complement = request.Complement,
-                    CityId = request.CityId
-                }
-            };
-            
+            var address = new Address(
+                    request.Street,
+                    request.Number,
+                    request.District,
+                    request.ZipCode,
+                    request.Complement,
+                    request.CityId
+            );
+                        
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
-            var user = _mapper.Map<User>(request);
-            user.Addresses = addresses;
-            var userCreated = await _unitOfWork.Users.AddAsync(user);
-            try
-            {
-                await _unitOfWork.CompleteAsync();
-            }catch(Exception e)
-            {
+            var entity = _mapper.Map<User>(request);
+            entity.AddAddress(address);
+            await _unitOfWork.Users.AddAsync(entity);
+            
+            await _unitOfWork.CompleteAsync();
 
-            }
-                return userCreated.Id;
+            var viewModel = _mapper.Map<UserViewModel>(entity);
+
+            return Result<UserViewModel>.Success(viewModel);
         }
     }
 }

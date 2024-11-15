@@ -25,23 +25,13 @@ namespace Restaurant.Application.Commands.ProductCommands.CreateProduct
             await _unitOfWork.Products.AddAsync(product);
             await _unitOfWork.CompleteAsync();
 
-            var stockProduct = new StockProduct {
-                ProductId = product.Id,
-                QuantityInStock = product.QuantityInStock,
-                CreatedByUserId = product.CreatedByUserId,
-                CreatedAt = product.CreatedAt
-            };
+            var stockProduct = new StockProduct(product.Id, product.QuantityInStock);
+            stockProduct.SetCreatedByUserId(product.CreatedByUserId);
 
-            try
-            {
-                await _unitOfWork.StockProducts.AddAsync(stockProduct);
-                await _unitOfWork.CompleteAsync();
-            }catch(Exception ex)
-            {
+            await _unitOfWork.StockProducts.AddAsync(stockProduct);
+            await _unitOfWork.CompleteAsync();
 
-            }
-
-                var viewModel = _mapper.Map<ProductViewModel>(product);
+            var viewModel = _mapper.Map<ProductViewModel>(product);
             return Result<ProductViewModel>.Success(viewModel);
         }
     }
