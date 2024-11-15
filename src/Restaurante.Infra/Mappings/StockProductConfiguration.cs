@@ -18,7 +18,11 @@ namespace Restaurant.Infra.Mappings
 
             // Configuração das propriedades
             builder.Property(sp => sp.QuantityInStock)
-                .HasColumnType("decimal(18,2)") // Definindo a precisão da quantidade
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
+
+            builder.Property(sp => sp.MinimumStock)
+                .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
             builder.HasMany(ps => ps.StockMovements)

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Entities.Base;
 using Restaurant.Infra.Mappings;
@@ -35,6 +34,8 @@ namespace Restaurant.Infra.Persistence
         public DbSet<StockProduct> StockProducts { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +57,8 @@ namespace Restaurant.Infra.Persistence
             modelBuilder.ApplyConfiguration(new MenuItemProductConfiguration());
             modelBuilder.ApplyConfiguration(new StockProductConfiguration());
             modelBuilder.ApplyConfiguration(new StockMovementConfiguration());
+            modelBuilder.ApplyConfiguration(new StockMovementConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

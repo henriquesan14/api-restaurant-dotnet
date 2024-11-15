@@ -25,7 +25,7 @@ namespace Restaurant.Application.Commands.ProductCommands.CreateProduct
             await _unitOfWork.Products.AddAsync(product);
             await _unitOfWork.CompleteAsync();
 
-            var stockProduct = new StockProduct(product.Id, product.QuantityInStock);
+            var stockProduct = new StockProduct(product.Id, product.QuantityInStock, product.MinimumStock);
             stockProduct.SetCreatedByUserId(product.CreatedByUserId);
 
             await _unitOfWork.StockProducts.AddAsync(stockProduct);

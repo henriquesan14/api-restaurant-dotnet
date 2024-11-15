@@ -1,4 +1,6 @@
-﻿namespace Restaurant.Core.Entities.Base
+﻿using Restaurant.Core.Common;
+
+namespace Restaurant.Core.Entities.Base
 {
 
     public abstract class BaseEntity<TId>
@@ -13,7 +15,21 @@
 
         public int? UpdatedByUserId { get; protected set; }
 
+        private List<IDomainEvent> _domainEvents = new();
+
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
+
         int? _requestedHashCode;
+
+        protected void AddDomainEvent(IDomainEvent eventItem)
+        {
+            _domainEvents.Add(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
+        }
 
         public bool IsTransient()
         {

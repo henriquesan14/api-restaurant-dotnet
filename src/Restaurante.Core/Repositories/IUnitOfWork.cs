@@ -14,6 +14,7 @@
         IMenuRepository Menus { get; }
         IStockProductRepository StockProducts { get; }
         IStockMovementRepository StockMovements { get; }
+        INotificationRepository Notifications { get; }
 
         Task<int> CompleteAsync();
         Task BeginTransaction();

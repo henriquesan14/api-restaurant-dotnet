@@ -1,4 +1,5 @@
 ﻿using Restaurant.Core.Entities.Base;
+using Restaurant.Core.Events;
 using System.Text.Json.Serialization;
 
 namespace Restaurant.Core.Entities
@@ -9,12 +10,13 @@ namespace Restaurant.Core.Entities
         {
         }
 
-        public Product(string name, string description, ProductCategory category, int categoryId)
+        public Product(string name, string description, ProductCategory category, int categoryId, decimal minimumStock)
         {
             Name = name;
             Description = description;
             Category = category;
             CategoryId = categoryId;
+            MinimumStock = minimumStock;
         }
 
         public string Name { get; private set; }
@@ -28,6 +30,8 @@ namespace Restaurant.Core.Entities
         public decimal QuantityInStock { get; private set; }
 
         public string UnitOfMeasure { get; private set; }
+
+        public decimal MinimumStock { get; set; }
 
         // Relacionamento com estoque
         public StockProduct StockProduct { get; private set; }
@@ -56,6 +60,12 @@ namespace Restaurant.Core.Entities
                 throw new InvalidOperationException("Quantidade insuficiente em estoque.");
 
             QuantityInStock -= quantity;
+
+            if (QuantityInStock <= MinimumStock)
+            {
+                AddDomainEvent(new LowStockEvent(Id, Name, QuantityInStock));
+            }
+
         }
 
     }

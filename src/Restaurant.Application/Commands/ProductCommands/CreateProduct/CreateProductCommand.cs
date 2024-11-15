@@ -11,7 +11,9 @@ namespace Restaurant.Application.Commands.ProductCommands.CreateProduct
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public int QuantityInStock { get; set; }
+        public decimal QuantityInStock { get; set; }
+
+        public decimal MininumStock { get; set; }
 
         public string UnitOfMeasure { get; set; }
 

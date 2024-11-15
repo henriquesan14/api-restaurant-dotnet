@@ -1,7 +1,4 @@
 ﻿using Restaurant.Core.Entities.Base;
-using Restaurant.Core.Enums;
-using Restaurant.Core.Events;
-using System.Xml.Linq;
 
 namespace Restaurant.Core.Entities
 {
@@ -13,15 +10,18 @@ namespace Restaurant.Core.Entities
             
         }
 
-        public StockProduct(int productId, decimal quantityInStock)
+        public StockProduct(int productId, decimal quantityInStock, decimal minimumStock)
         {
             ProductId = productId;
             QuantityInStock = quantityInStock;
+            MinimumStock = minimumStock;
         }
 
         public Product Product { get; private set; }
         public int ProductId { get; private set; }
         public decimal QuantityInStock { get; private set; }
+
+        public decimal MinimumStock { get; private set; }
 
         public List<StockMovement> StockMovements { get; private set; }
 
@@ -43,6 +43,7 @@ namespace Restaurant.Core.Entities
                 throw new InvalidOperationException("Quantidade insuficiente em estoque.");
 
             QuantityInStock -= quantity;
+
         }
 
     }

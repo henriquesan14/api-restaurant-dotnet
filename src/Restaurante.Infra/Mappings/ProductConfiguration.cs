@@ -28,6 +28,10 @@ namespace Restaurant.Infra.Mappings
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
+            builder.Property(sp => sp.MinimumStock)
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
+
             builder.Property(p => p.UnitOfMeasure)
                 .HasMaxLength(50);
 

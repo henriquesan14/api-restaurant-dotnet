@@ -1,7 +1,11 @@
-﻿using Restaurant.Application.Identity;
+﻿using Restaurant.Application.EventHandlers;
+using Restaurant.Application.Identity;
+using Restaurant.Core.EventHandlers;
+using Restaurant.Core.Events;
 using Restaurant.Core.Repositories;
 using Restaurant.Core.Repositories.Base;
 using Restaurant.Core.Services;
+using Restaurant.Infra.Events;
 using Restaurant.Infra.MessageBus;
 using Restaurant.Infra.Persistence.Repositories;
 using Restaurant.Infra.Persistence.Repositories.Base;
@@ -28,7 +32,13 @@ namespace Restaurant.API.Extensions
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IStockProductRepository, StockProductRepository>();
             services.AddTransient<IStockMovementRepository, StockMovementRepository>();
+            services.AddTransient<INotificationRepository, NotificationRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<DomainEventDispatcher>();
+
+            // Registra handlers de eventos
+            services.AddScoped<IDomainEventHandler<LowStockEvent>, LowStockEventHandler>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
