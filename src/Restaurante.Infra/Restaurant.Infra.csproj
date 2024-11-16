@@ -8,6 +8,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.406.2" />
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">

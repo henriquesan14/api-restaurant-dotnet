@@ -44,6 +44,7 @@ namespace Restaurant.API.Extensions
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<IMessageBusService, MessageBusService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IStorageService, StorageService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AuthenticatedUser>();
