@@ -17,6 +17,9 @@ namespace Restaurant.Infra.Mappings
                 .IsRequired()          // Torna o nome obrigatório
                 .HasMaxLength(100);    // Define um tamanho máximo para o nome
 
+            builder.Property(t => t.Capacity)
+                .IsRequired();
+
             // Configuração da propriedade 'Status' (enum)
             builder.Property(t => t.Status)
                 .IsRequired();         // Torna o status obrigatório

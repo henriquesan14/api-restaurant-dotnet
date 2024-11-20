@@ -16,7 +16,6 @@ namespace Restaurant.Core.Entities
             Description = description;
             Category = category;
             CategoryId = categoryId;
-            MinimumStock = minimumStock;
         }
 
         public string Name { get; private set; }
@@ -61,10 +60,10 @@ namespace Restaurant.Core.Entities
 
             QuantityInStock -= quantity;
 
-            if (QuantityInStock <= MinimumStock)
-            {
-                AddDomainEvent(new LowStockEvent(Id, Name, QuantityInStock));
-            }
+            //if (QuantityInStock <= MinimumStock)
+            //{
+            //    AddDomainEvent(new LowStockEvent(Id, Name, QuantityInStock));
+            //}
 
         }
 

@@ -48,7 +48,7 @@ namespace Restaurant.Application.Queries.UserQueries
             var token = _tokenService.GenerateToken(userExists);
             return new AuthResponseViewModel
             {
-                Token = token,
+                AccessToken = token,
                 User = _mapper.Map<UserViewModel>(userExists)
             };
         }

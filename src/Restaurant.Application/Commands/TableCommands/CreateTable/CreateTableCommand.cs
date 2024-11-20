@@ -8,6 +8,7 @@ namespace Restaurant.Application.Commands.TableCommands.CreateTable
     {
         public string Name { get; set; }
         public TableStatusEnum Status { get; set; }
+        public int Capacity { get; set; }
 
         public int CreatedByUserId { get; set; }
     }

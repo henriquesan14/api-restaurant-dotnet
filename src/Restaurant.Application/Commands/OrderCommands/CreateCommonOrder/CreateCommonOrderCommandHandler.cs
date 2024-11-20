@@ -43,7 +43,7 @@ namespace Restaurant.Application.Commands.OrderCommands.CreateCommonOrder
                     if (stockProduct.QuantityInStock < neededProduct.QuantityRequired * item.Quantity.Value)
                     {
                         // Opcional: lançar exceção ou retornar erro se o estoque for insuficiente
-                        throw new InvalidOperationException($"Estoque insuficiente para o produto {stockProduct.Product.Name}");
+                        //throw new InvalidOperationException($"Estoque insuficiente para o produto {stockProduct.Product.Name}");
                     }
 
                     // Reduzir a quantidade em estoque

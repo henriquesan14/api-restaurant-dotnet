@@ -3,6 +3,7 @@
     public enum TableStatusEnum
     {
         AVAILABLE,
-        BUSY
+        BUSY,
+        RESERVED
     }
 }
