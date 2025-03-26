@@ -7,10 +7,10 @@ namespace Restaurant.Core.Entities
     {
         public User()
         {
+            Addresses = new List<Address>();
         }
 
-        public User(string firstName, string lastName, string document, string email, string phoneNumber, string password, Role role,
-            int roleId, IEnumerable<Address> addresses, IEnumerable<Order> orders)
+        public User(string firstName, string lastName, string document, string email, string phoneNumber, string password, int roleId)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -18,26 +18,39 @@ namespace Restaurant.Core.Entities
             Email = email;
             PhoneNumber = phoneNumber;
             Password = password;
-            Role = role;
             RoleId = roleId;
-            Addresses = addresses;
-            Orders = orders;
+            Addresses = new List<Address>();
         }
 
-        public string FirstName { get; set; }
+        public string FirstName { get; private set; }
 
-        public string LastName { get; set; }
-        public string Document { get; set; }
+        public string LastName { get; private set; }
+        public string Document { get; private set; }
 
-        public string Email { get; set; }
+        public string Email { get; private set; }
 
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; private set; }
         [JsonIgnore]
-        public string Password { get; set; }
-        public virtual Role Role { get; set; }
-        public int RoleId { get; set; }
-        public virtual IEnumerable<Address> Addresses { get; set; }
+        public string Password { get; private set; }
+        public virtual Role Role { get; private set; }
+        public int RoleId { get; private set; }
+        public virtual IEnumerable<Address> Addresses { get; private set; }
         [JsonIgnore]
-        public virtual IEnumerable<Order> Orders { get; set; }
+        public virtual IEnumerable<Order> Orders { get; private set; }
+
+        public void AddAddress(Address address)
+        {
+            if (address == null)
+                throw new ArgumentNullException(nameof(address));
+
+            // Inicializa a coleção como uma lista mutável caso esteja vazia
+            if (Addresses is not List<Address> addressList)
+            {
+                addressList = Addresses.ToList();
+                Addresses = addressList;
+            }
+
+            addressList.Add(address);
+        }
     }
 }

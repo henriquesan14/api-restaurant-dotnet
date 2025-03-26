@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Restaurant.Application.Queries.CategoryQueries.GetByCategoryType
 {
-    public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, PagedListViewModel<CategoryViewModel>>
+    public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, PagedListViewModel<ProductCategoryViewModel>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,15 +19,14 @@ namespace Restaurant.Application.Queries.CategoryQueries.GetByCategoryType
             _mapper = mapper;
         }
 
-        public async Task<PagedListViewModel<CategoryViewModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<PagedListViewModel<ProductCategoryViewModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<Category, bool>> predicate = p => (request.Name == null || p.Name.ToLower().Contains(request.Name.ToLower())) &&
-            (p.CategoryType.Equals(request.CategoryType) || request.CategoryType == null);
+            Expression<Func<ProductCategory, bool>> predicate = p => (request.Name == null || p.Name.ToLower().Contains(request.Name.ToLower()));
            
             var list = await _unitOfWork.Categories.GetAsync(predicate, pageNumber: request.PageNumber, pageSize: request.PageSize);
             var count = await _unitOfWork.Categories.GetCountAsync(predicate);
-            var viewModel = _mapper.Map<List<CategoryViewModel>>(list);
-            return new PagedListViewModel<CategoryViewModel>(viewModel, count, request.PageNumber, request.PageSize);
+            var viewModel = _mapper.Map<List<ProductCategoryViewModel>>(list);
+            return new PagedListViewModel<ProductCategoryViewModel>(viewModel, count, request.PageNumber, request.PageSize);
         }
     }
 }

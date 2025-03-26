@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.API.Controllers.Base;
 using Restaurant.Application.Commands.OrderCommands.CreateCommonOrder;
 using Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder;
 using Restaurant.Application.Commands.OrderCommands.UpdateOrderStatusCommand;
@@ -10,20 +11,14 @@ using Restaurant.Application.Queries.OrderQueries.GetCountOrderToday;
 using Restaurant.Application.Queries.OrderQueries.GetOrder;
 using Restaurant.Application.Queries.OrderQueries.GetTotalDailyByMonth;
 using Restaurant.Application.Queries.OrderQueries.GetTotalOrders;
-using Restaurant.Application.ViewModels.Page;
 using Restaurant.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Restaurant.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class OrderController : AuthorizedController
+    public class OrderController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -35,19 +30,13 @@ namespace Restaurant.API.Controllers
         [HttpPost("common")]
         public async Task<IActionResult> CreateCommonOrder([FromBody] CreateCommonOrderCommand command)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IEnumerable<Claim> claims = identity.Claims;
-            command.EmployeeId = int.Parse(UserId);
-            var id = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = id }, command);
+            var result = await _mediator.Send(command);
+            return HandleCreatedAtActionResult(result, "GetById", new { Id = result?.Value});
         }
 
         [HttpPost("delivery")]
         public async Task<IActionResult> CreateDeliveryOrder([FromBody] CreateDeliveryOrderCommand command)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userId = claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var id = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
@@ -56,7 +45,7 @@ namespace Restaurant.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] GetAllOrdersQuery query)
         {
             var order = await _mediator.Send(query);
-            return Ok(order);
+            return HandleResult(order);
         }
 
         [HttpGet("{id}")]

@@ -16,9 +16,9 @@ namespace Restaurant.Infra.Persistence.Repositories
         {
             return await DbContext.Set<OrderItem>()
                 .AsNoTracking()
-                .Where(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Value.Date == date.Value.Date || !date.HasValue))
+                .Where(o => ((int)o.Status == status || !status.HasValue) && (date.HasValue && o.CreatedAt.Date == date.Value.Date || !date.HasValue))
                 .Include(o => o.Order)
-                .Include(o => o.Product)
+                .Include(o => o.MenuItem)
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)
                                     .ToListAsync();

@@ -5,9 +5,19 @@ namespace Restaurant.Core.Entities
 {
     public class Role : Entity
     {
-        public string Name { get; set; }
+        public Role()
+        {
+
+        }
+
+        public Role(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; private set; }
 
         [JsonIgnore]
-        public virtual IEnumerable<User> Users { get; set; }
+        public virtual IEnumerable<User> Users { get; private set; }
     }
 }

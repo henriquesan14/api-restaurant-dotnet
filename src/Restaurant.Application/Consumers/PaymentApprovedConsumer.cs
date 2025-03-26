@@ -67,7 +67,7 @@ namespace Restaurant.Application.Consumers
 
                 var order = await unitOfWork.Orders.GetOrderById(orderId);
 
-                order.Status = Core.Enums.OrderStatusEnum.FINISHED;
+                order.UpdateStatus(Core.Enums.OrderStatusEnum.FINISHED);
 
                 unitOfWork.Orders.UpdateAsync(order);
                 await unitOfWork.CompleteAsync();

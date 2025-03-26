@@ -9,9 +9,8 @@ namespace Restaurant.Application.Validators
         {
             RuleFor(u => u.Name)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório");
-            RuleFor(u => u.Status)
-                .NotNull().WithMessage("O campo {PropertyName} é obrigatório")
-                .IsInEnum().WithMessage("O campo {PropertyName} é inválido");
+            RuleFor(u => u.Capacity)
+                .GreaterThan(0).WithMessage("O campo {PropertyName} é inválido");
         }
     }
 }

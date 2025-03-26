@@ -3,19 +3,17 @@ using MediatR;
 using Restaurant.Application.ViewModels;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Restaurant.Application.Queries.OrderQueries.GetOrder
 {
     public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, OrderViewModel>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetOrderQueryHandler(IOrderRepository orderRepository, IMapper mapper)
+        public GetOrderQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _orderRepository = orderRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -24,10 +22,10 @@ namespace Restaurant.Application.Queries.OrderQueries.GetOrder
             Order order;
             if (request.OrderType == Core.Enums.OrderTypeEnum.COMMON)
             {
-                order = await _orderRepository.GetCommonOrderByIdAsync(request.Id);
+                order = await _unitOfWork.Orders.GetCommonOrderByIdAsync(request.Id);
                 return _mapper.Map<OrderViewModel>(order);
             }
-            order = await _orderRepository.GetDeliveryOrderByIdAsync(request.Id);
+            order = await _unitOfWork.Orders.GetDeliveryOrderByIdAsync(request.Id);
             return _mapper.Map<OrderViewModel>(order);
 
         }

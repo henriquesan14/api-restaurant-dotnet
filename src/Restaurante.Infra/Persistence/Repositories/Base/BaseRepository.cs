@@ -73,16 +73,38 @@ namespace Restaurant.Infra.Persistence.Repositories.Base
         }
 
 
-        public virtual async Task<T> GetByIdAsync(int id)
-        {
-            return await DbContext.Set<T>().FindAsync(id);
-        }
-
-        public async Task<T> GetByIdAsync(int id, List<Expression<Func<T, object>>> includes = null)
+        public async Task<T> GetByIdAsync(int id, bool disableTracking = false, List<Expression<Func<T, object>>> includes = null)
         {
             IQueryable<T> query = DbContext.Set<T>();
-            if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
-            return await query.FirstOrDefaultAsync(p => p.Id.Equals(id));
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return await query.FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, bool disableTracking = false, List<Expression<Func<T, object>>> includes = null)
+        {
+            IQueryable<T> query = DbContext.Set<T>();
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return await query.FirstOrDefaultAsync(predicate);
         }
 
         public async Task<T> AddAsync(T entity)
@@ -108,7 +130,9 @@ namespace Restaurant.Infra.Persistence.Repositories.Base
 
         public virtual async Task<int> GetCountAsync(Expression<Func<T, bool>> predicate = null)
         {
-            return await DbContext.Set<T>().CountAsync(predicate);
+            return predicate == null
+            ? await DbContext.Set<T>().CountAsync()
+            : await DbContext.Set<T>().CountAsync(predicate);
         }
     }
 }

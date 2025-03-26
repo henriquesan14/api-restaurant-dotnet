@@ -1,10 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.API.Controllers.Base;
 using Restaurant.Application.Commands.TableCommands.CreateTable;
 using Restaurant.Application.Commands.TableCommands.DeleteTable;
+using Restaurant.Application.Commands.TableCommands.UpdateStatusTable;
 using Restaurant.Application.Commands.TableCommands.UpdateTable;
 using Restaurant.Application.Queries.TableQueries.GetAllTables;
+using Restaurant.Application.Queries.TableQueries.GetTable;
 using Restaurant.Core.Enums;
 using System.Threading.Tasks;
 
@@ -13,7 +16,7 @@ namespace Restaurant.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class TableController : ControllerBase
+    public class TableController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -27,7 +30,15 @@ namespace Restaurant.API.Controllers
         {
             var query = new GetAllTablesQuery(status);
             var result = await _mediator.Send(query);
-            return Ok(result);
+            return HandleResult(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var query = new GetTableQuery(id);
+            var result = await _mediator.Send(query);
+            return HandleResult(result);
         }
 
         [Authorize(Roles = "Admin")]
@@ -61,6 +72,14 @@ namespace Restaurant.API.Controllers
                 return NotFound();
             }
             return NoContent();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch]
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatusTableCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return HandleResult(result);
         }
     }
 }

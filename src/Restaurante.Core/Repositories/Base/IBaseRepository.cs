@@ -20,8 +20,9 @@ namespace Restaurant.Core.Repositories.Base
           bool disableTracking = true,
           int? pageNumber = null, int? pageSize = 20);
 
-        Task<T> GetByIdAsync(int id);
-        Task<T> GetByIdAsync(int id, List<Expression<Func<T, object>>> includes = null);
+        Task<T> GetByIdAsync(int id, bool disableTracking = false, List<Expression<Func<T, object>>> includes = null);
+
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, bool disableTracking = false, List<Expression<Func<T, object>>> includes = null);
 
         Task<T> AddAsync(T entity);
 

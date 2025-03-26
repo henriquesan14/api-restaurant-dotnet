@@ -1,54 +1,77 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Restaurant.Application.Identity;
+using Restaurant.Application.ViewModels;
+using Restaurant.Core.Common;
 using Restaurant.Core.Entities;
+using Restaurant.Core.Enums;
 using Restaurant.Core.Repositories;
 
 namespace Restaurant.Application.Commands.OrderCommands.CreateDeliveryOrder
 {
-    public class CreateDeliveryOrderCommandHandler : IRequestHandler<CreateDeliveryOrderCommand, int>
+    public class CreateDeliveryOrderCommandHandler : IRequestHandler<CreateDeliveryOrderCommand, Result<OrderViewModel>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CreateDeliveryOrderCommandHandler(IUnitOfWork unitOfWork)
+        public CreateDeliveryOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateDeliveryOrderCommand request, CancellationToken cancellationToken)
+        public async Task<Result<OrderViewModel>> Handle(CreateDeliveryOrderCommand request, CancellationToken cancellationToken)
         {
-            var entity = new DeliveryOrder();
-            entity.AddressId = request.AddressId;
-            entity.ClientId = request.ClientId;
-            decimal valueTotal = 0;
-            entity.Status = Core.Enums.OrderStatusEnum.CREATED;
-            entity.Type = "Delivery";
+            var entity = new DeliveryOrder(request.ClientId, request.AddressId, 0, request.CreatedByUserId);
 
             await _unitOfWork.BeginTransaction();
 
-            var orderItems = new List<OrderItem>();
             foreach (var item in request.Items)
             {
-                var orderItem = new OrderItem();
-                var product = await _unitOfWork.Products.GetByIdAsync(item.ProductId!.Value);
+                var menuItem = await _unitOfWork.MenuItems.GetMenuItemIncludeItemsByIdAsync(item.MenuItemId!.Value);
+                var orderItem = new OrderItem(item.Quantity.Value, menuItem, item.Observation, request.CreatedByUserId);
 
-                orderItem.Product = product;
-                orderItem.Quantity = item.Quantity!.Value;
-                orderItem.Status = Core.Enums.OrderItemStatusEnum.PENDING;
-                orderItem.CreatedAt = DateTime.UtcNow;
+                entity.AddItem(orderItem);
 
-                orderItems.Add(orderItem);
-                valueTotal += product.Price * item.Quantity!.Value;
+                foreach (var neededProduct in menuItem.NeededProducts)
+                {
+                    var stockProduct = await _unitOfWork.StockProducts.GetByIdAsync(neededProduct.ProductId);
+                    var product = await _unitOfWork.Products.GetByIdAsync(neededProduct.ProductId);
+
+                    var totalRequiredQuantity = neededProduct.QuantityRequired * item.Quantity.Value;
+
+                    if (stockProduct.QuantityInStock < neededProduct.QuantityRequired * item.Quantity.Value)
+                    {
+                        // Opcional: lançar exceção ou retornar erro se o estoque for insuficiente
+                        //throw new InvalidOperationException($"Estoque insuficiente para o produto {stockProduct.Product.Name}");
+                    }
+
+                    // Reduzir a quantidade em estoque
+                    stockProduct.RemoveStock(totalRequiredQuantity);
+                    product.RemoveStock(totalRequiredQuantity);
+
+                    stockProduct.SetUpdatedByUserId(request.CreatedByUserId);
+                    product.SetUpdatedByUserId(request.CreatedByUserId);
+
+                    // Atualizar o StockProduct no banco
+                    _unitOfWork.StockProducts.UpdateAsync(stockProduct);
+                    _unitOfWork.Products.UpdateAsync(product);
+
+                    // Registrar o movimento de estoque
+                    var stockMovement = new StockMovement(stockProduct.ProductId, totalRequiredQuantity, MovementTypeEnum.EXIT, request.CreatedByUserId);
+                    await _unitOfWork.StockMovements.AddAsync(stockMovement);
+                }
             }
 
-            entity.ValueTotal = valueTotal;
-            entity.Items = orderItems;
-
-            var result = await _unitOfWork.Orders.AddAsync(entity);
+            await _unitOfWork.Orders.AddAsync(entity);
 
             await _unitOfWork.CompleteAsync();
 
             await _unitOfWork.CommitAsync();
 
-            return result.Id;
+            var viewModel = _mapper.Map<OrderViewModel>(entity);
+
+            return Result<OrderViewModel>.Success(viewModel);
         }
     }
 }

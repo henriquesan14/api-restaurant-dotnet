@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Application.Mappers;
 
 namespace Restaurant.API.Extensions
@@ -11,13 +10,16 @@ namespace Restaurant.API.Extensions
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ProductMapper>();
-                cfg.AddProfile<CategoryMapper>();
+                cfg.AddProfile<ProductCategoryMapper>();
                 cfg.AddProfile<UserMapper>();
                 cfg.AddProfile<OrderMapper>();
                 cfg.AddProfile<TableMapper>();
                 cfg.AddProfile<OrderItemMapper>();
                 cfg.AddProfile<AddressMapper>();
                 cfg.AddProfile<StatisticOrderMapper>();
+                cfg.AddProfile<MenuItemMapper>();
+                cfg.AddProfile<MenuMapper>();
+                cfg.AddProfile<MenuCategoryMapper>();
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);

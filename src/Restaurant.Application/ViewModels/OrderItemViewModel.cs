@@ -1,7 +1,6 @@
 ﻿
 using Restaurant.Core.Entities;
 using Restaurant.Core.Enums;
-using System;
 
 namespace Restaurant.Application.ViewModels
 {
@@ -13,7 +12,7 @@ namespace Restaurant.Application.ViewModels
 
         public int Quantity { get; set; }
 
-        public Product Product { get; set; }
+        public MenuItem MenuItem { get; set; }
 
         public int OrderId { get; set; }
 

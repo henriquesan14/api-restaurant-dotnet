@@ -2,10 +2,21 @@
 {
     public class CommonOrder : Order
     {
-        public virtual Table Table { get; set; }
-        public int? TableId { get; set; }
+        public CommonOrder()
+        {
+            
+        }
 
-        public virtual User Employee { get; set; }
-        public int EmployeeId { get; set; }
+        public CommonOrder(int clientId, int tableId, decimal valueTotal, int createdByUserId)
+        : base("Common", clientId, valueTotal)
+        {
+            TableId = tableId;
+            CreatedByUserId = createdByUserId;
+        }
+
+        public virtual Table Table { get; private set; }
+        public int? TableId { get; private set; }
+
+        public virtual User CreatedByUser { get; private set; }
     }
 }

@@ -6,34 +6,40 @@ namespace Restaurant.Core.Entities
 {
     public class OrderItem : Entity
     {
-        public OrderItem(int quantity, OrderItemStatusEnum status, Product product, Order order)
-        {
-            Quantity = quantity;
-            Status = status;
-            Product = product;
-            Order = order;
-        }
 
         public OrderItem()
         {
+            
         }
 
-        public int Quantity { get; set; }
+        public OrderItem(int quantity, MenuItem menuItem, string? observation, int createdByUserId)
+        {
+            Status = OrderItemStatusEnum.PENDING;
+            Quantity = quantity;
+            MenuItem = menuItem;
+            MenuItemId = menuItem.Id;
+            Observation = observation;
+            CreatedByUserId = createdByUserId;
+        }
 
-        public OrderItemStatusEnum Status{ get; set; }
+        public int Quantity { get; private set; }
 
-        public virtual Product Product { get; set; }
+        public OrderItemStatusEnum Status{ get; private set; }
+
+        public virtual MenuItem MenuItem { get; private set; }
         [JsonIgnore]
-        public int ProductId { get; set; }
+        public int MenuItemId { get; set; }
 
         [JsonIgnore]
-        public virtual Order Order { get; set; }
+        public virtual Order Order { get; private set; }
         [JsonIgnore]
-        public int OrderId { get; set; }
+        public int OrderId { get; private set; }
+
+        public string? Observation { get; private set; }
 
         public decimal SubTotal
         {
-            get { return Product != null ? Product.Price * Quantity : 0; }
+            get { return MenuItem != null ? MenuItem.Price * Quantity : 0; }
         }
     }
 }

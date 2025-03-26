@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
 using Restaurant.Application.ViewModels;
+using Restaurant.Core.Common;
 using Restaurant.Core.Entities;
 using Restaurant.Core.Repositories;
 using System.Linq.Expressions;
 
 namespace Restaurant.Application.Queries.TableQueries.GetAllTables
 {
-    public class GetAllTablesQueryHandler : IRequestHandler<GetAllTablesQuery, List<TableViewModel>>
+    public class GetAllTablesQueryHandler : IRequestHandler<GetAllTablesQuery, Result<List<TableViewModel>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,12 +19,14 @@ namespace Restaurant.Application.Queries.TableQueries.GetAllTables
             _mapper = mapper;
         }
 
-        public async Task<List<TableViewModel>> Handle(GetAllTablesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<TableViewModel>>> Handle(GetAllTablesQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<Table, bool>> predicate = t => t.Status == request.TableStatus;
-            var result = await _unitOfWork.Tables.GetAsync(predicate);
+            Expression<Func<Table, bool>> predicate = (t => t.Status == request.TableStatus || request.TableStatus == null);
+            Func<IQueryable<Table>, IOrderedQueryable<Table>> orderBy = q => q.OrderBy(e => e.Name);
+
+            var result = await _unitOfWork.Tables.GetAsync(predicate, orderBy, null, true);
             var viewModel = _mapper.Map<List<TableViewModel>>(result);
-            return viewModel;
+            return Result<List<TableViewModel>>.Success(viewModel);
         }
     }
 }

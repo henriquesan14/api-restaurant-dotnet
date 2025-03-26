@@ -1,8 +1,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.API.Extensions;
 using Restaurant.API.Filters;
+using Restaurant.Application.Behaviors;
 using Restaurant.Application.Consumers;
 using Restaurant.Application.Validators;
 using Restaurant.Infra.Persistence;
@@ -31,8 +33,22 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateCommonOrderCommandVal
 
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CreatedByBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UpdatedByBehavior<,>));
 
 builder.Services.JsonSerializationConfig();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:4200", "http://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -46,6 +62,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

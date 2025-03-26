@@ -1,19 +1,35 @@
-﻿namespace Restaurant.Core.Entities.Base
+﻿using Restaurant.Core.Common;
+
+namespace Restaurant.Core.Entities.Base
 {
 
-    public abstract class BaseEntity<TId> : IBaseEntity<TId>
+    public abstract class BaseEntity<TId>
     {
         public virtual TId Id { get; protected set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; protected set; }
 
-        public int CreatedById { get; set; }
+        public int CreatedByUserId { get; protected set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; protected set; }
 
-        public int? UpdatedById { get; set; }
+        public int? UpdatedByUserId { get; protected set; }
+
+        private List<IDomainEvent> _domainEvents = new();
+
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
 
         int? _requestedHashCode;
+
+        protected void AddDomainEvent(IDomainEvent eventItem)
+        {
+            _domainEvents.Add(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
+        }
 
         public bool IsTransient()
         {
@@ -67,6 +83,26 @@
         public static bool operator !=(BaseEntity<TId> left, BaseEntity<TId> right)
         {
             return !(left == right);
+        }
+
+        public void SetCreatedByUserId(int createdByUserId)
+        {
+            CreatedByUserId = createdByUserId;
+        }
+
+        public void SetCreatedAt(DateTime createdAt)
+        {
+            CreatedAt = createdAt;
+        }
+
+        public void SetUpdatedByUserId(int? createdByUserId)
+        {
+            UpdatedByUserId = createdByUserId;
+        }
+
+        public void SetUpdatedAt(DateTime? updatedAt)
+        {
+            UpdatedAt = updatedAt;
         }
 
     }
